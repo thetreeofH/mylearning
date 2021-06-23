@@ -2,7 +2,24 @@
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/module/oauth/config/OAuthSecurityConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/runner/AuthServerRunner.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/ClientConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/AuthBootstrap.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/WebConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/module/oauth/config/Oauth2ExceptionTranslatorConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/AuthConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/jwt/client/ClientTokenUtil.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/KeyConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/FeignConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/RedisConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/configuration/UserConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/module/oauth/config/WebSecurityConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/github/wxiaoqi/security/auth/module/oauth/config/ResourceServerConfig.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>
