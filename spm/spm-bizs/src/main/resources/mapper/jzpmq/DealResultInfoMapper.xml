@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.jzpmq.DealResultInfoMapper">
+    <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpmq.DealResultInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="FIRST_TIME" jdbcType="TIMESTAMP" property="firstTime"/>
+        <result column="MISSION_ID" jdbcType="VARCHAR" property="missionId"/>
+        <result column="POINTID" jdbcType="VARCHAR" property="pointid"/>
+        <result column="SN" jdbcType="VARCHAR" property="sn"/>
+        <result column="JUDGE_PICTURE_SOURCE" jdbcType="DECIMAL" property="judgePictureSource"/>
+        <result column="HANDLE_USER_ID" jdbcType="VARCHAR" property="handleUserId"/>
+        <result column="HANDLE_RESULT" jdbcType="DECIMAL" property="handleResult"/>
+        <result column="LOCATION_OF_SUSPECTED_ITEMS" jdbcType="VARCHAR" property="locationOfSuspectedItems"/>
+        <result column="SUSPECTED_FORBIDDEN_TYPE" jdbcType="DECIMAL" property="suspectedForbiddenType"/>
+        <result column="PASSENGER_NAME" jdbcType="VARCHAR" property="passengerName"/>
+        <result column="PASSENGER_ID_CARD" jdbcType="VARCHAR" property="passengerIdCard"/>
+        <result column="SUSPECTED_ITEMS_PICTURE" jdbcType="VARCHAR" property="suspectedItemsPicture"/>
+        <result column="JUDGE_USER_ID" jdbcType="VARCHAR" property="judgeUserId"/>
+        <result column="AUX_SUSPECTED_ITEMS_PICTURE" jdbcType="VARCHAR" property="auxSuspectedItemsPicture"/>
+        <result column="SUSPECTED_ITEMS_VISUAL_PICTURE" jdbcType="VARCHAR" property="suspectedItemsVisualPicture" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="ATTR1" jdbcType="VARCHAR" property="attr1"/>
+        <result column="ATTR2" jdbcType="VARCHAR" property="attr2"/>
+        <result column="ATTR3" jdbcType="VARCHAR" property="attr3"/>
+        <result column="ATTR4" jdbcType="VARCHAR" property="attr4"/>
+        <result column="ATTR5" jdbcType="VARCHAR" property="attr5"/>
+        <result column="ATTR6" jdbcType="VARCHAR" property="attr6"/>
+        <result column="IF_CHECK" jdbcType="DECIMAL" property="ifCheck"/>
+        <result column="SUSPECTED_FORBIDDEN_SUBTYPE" jdbcType="DECIMAL" property="suspectedForbiddenSubtype"/>
+        <result column="HANDLE_MODE" jdbcType="VARCHAR" property="handleMode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        ID, FIRST_TIME, MISSION_ID, POINTID, SN, JUDGE_PICTURE_SOURCE, HANDLE_USER_ID, HANDLE_RESULT,
+        LOCATION_OF_SUSPECTED_ITEMS, SUSPECTED_FORBIDDEN_TYPE, PASSENGER_NAME, PASSENGER_ID_CARD,
+        SUSPECTED_ITEMS_PICTURE, CREATE_TIME, UPDATE_TIME, MEMO, ATTR1, ATTR2, ATTR3, ATTR4,
+        ATTR5, ATTR6, IF_CHECK, SUSPECTED_FORBIDDEN_SUBTYPE, HANDLE_MODE,JUDGE_USER_ID,
+        AUX_SUSPECTED_ITEMS_PICTURE,SUSPECTED_ITEMS_VISUAL_PICTURE
+    </sql>
+
+    <select id="selectByMissionId" resultMap="BaseResultMap">
+        select ID, FIRST_TIME, MISSION_ID, POINTID, SN, JUDGE_PICTURE_SOURCE, HANDLE_USER_ID, HANDLE_RESULT,
+        LOCATION_OF_SUSPECTED_ITEMS, SUSPECTED_FORBIDDEN_TYPE, PASSENGER_NAME, PASSENGER_ID_CARD,
+        SUSPECTED_ITEMS_PICTURE, CREATE_TIME, UPDATE_TIME, MEMO, ATTR1, ATTR2, ATTR3, ATTR4,
+        ATTR5, ATTR6, IF_CHECK, SUSPECTED_FORBIDDEN_SUBTYPE, HANDLE_MODE,JUDGE_USER_ID,
+        AUX_SUSPECTED_ITEMS_PICTURE,SUSPECTED_ITEMS_VISUAL_PICTURE
+        from jzp_oper.DEAL_RESULT_INFO
+        where 1=1
+        <if test="missionId != null and missionId != ''">
+            and MISSION_ID = #{missionId}
+        </if>
+        order by CREATE_TIME desc limit 1
+    </select>
+
+    <resultMap id="queryResultMap" type="java.util.Map">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="FIRST_TIME" jdbcType="TIMESTAMP" property="firstTime"/>
+        <result column="MISSION_ID" jdbcType="VARCHAR" property="missionId"/>
+        <result column="POINTID" jdbcType="VARCHAR" property="pointid"/>
+        <result column="SN" jdbcType="VARCHAR" property="sn"/>
+        <result column="JUDGE_PICTURE_SOURCE" jdbcType="DECIMAL" property="judgePictureSource"/>
+        <result column="HANDLE_USER_ID" jdbcType="VARCHAR" property="handleUserId"/>
+        <result column="HANDLE_RESULT" jdbcType="DECIMAL" property="handleResult"/>
+        <result column="LOCATION_OF_SUSPECTED_ITEMS" jdbcType="VARCHAR" property="locationOfSuspectedItems"/>
+        <result column="SUSPECTED_FORBIDDEN_TYPE" jdbcType="DECIMAL" property="suspectedForbiddenType"/>
+        <result column="PASSENGER_NAME" jdbcType="VARCHAR" property="passengerName"/>
+        <result column="PASSENGER_ID_CARD" jdbcType="VARCHAR" property="passengerIdCard"/>
+        <result column="SUSPECTED_ITEMS_PICTURE" jdbcType="VARCHAR" property="suspectedItemsPicture"/>
+        <result column="SUSPECTED_ITEMS_VISUAL_PICTURE" jdbcType="VARCHAR" property="suspectedItemsVisualPicture" />
+        <result column="JUDGE_USER_ID" jdbcType="VARCHAR" property="judgeUserId"/>
+        <result column="AUX_SUSPECTED_ITEMS_PICTURE" jdbcType="VARCHAR" property="auxSuspectedItemsPicture"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="IF_CHECK" jdbcType="DECIMAL" property="ifCheck"/>
+        <result column="handle_user_name" jdbcType="VARCHAR" property="handleUserName"/>
+        <result column="station_id" jdbcType="VARCHAR" property="stationId"/>
+        <result column="station_name" jdbcType="VARCHAR" property="stationName"/>
+        <result column="point_name" jdbcType="VARCHAR" property="pointName"/>
+        <result column="forbidden_code" jdbcType="VARCHAR" property="forbiddenCode"/>
+        <result column="forbidden_name" jdbcType="VARCHAR" property="forbiddenName"/>
+        <result column="judge_name" jdbcType="VARCHAR" property="judgeName"/>
+        <result column="SUSPECTED_FORBIDDEN_SUBTYPE" jdbcType="DECIMAL" property="suspectedForbiddenSubtype"/>
+    </resultMap>
+
+    <select id="query" resultMap="queryResultMap" parameterType="java.util.Map">
+        select
+        dri.JUDGE_PICTURE_SOURCE,
+        CONCAT_WS(',',dri.SUSPECTED_ITEMS_PICTURE,dri.AUX_SUSPECTED_ITEMS_PICTURE,dri.SUSPECTED_ITEMS_VISUAL_PICTURE) as SUSPECTED_ITEMS_PICTURE,
+        dri.HANDLE_RESULT,
+        dri.CREATE_TIME,
+        e.name as handle_user_name,
+        r.id as station_id,
+        r.name as station_name,
+        p.name as point_name,
+        dt.code as forbidden_code,
+        us.NAME AS judge_name,
+        dt.name as forbidden_name
+        from jzp_oper.DEAL_RESULT_INFO dri
+        FORCE INDEX(dri_index_create_time)
+        FORCE INDEX(dri_index_point_id)
+        LEFT join SPM_SYS.BASE_USER u on dri.HANDLE_USER_ID = u.id
+        left join SPM_SYS.TBL_BASE_EMPLOYEE e on u.employ_id = e.id
+        left join SPM_SYS.base_point p on dri.POINTID = p.id
+        left join SPM_SYS.BASE_DEPART r on p.DEPART_ID = r.id
+        left join SPM_SYS.DICT_TYPE dt on cast(dri.SUSPECTED_FORBIDDEN_TYPE as char) = dt.CODE
+        and dt.PARENT_ID='5f5a9161ce714855b0f0d9a9b2469db6'
+        LEFT JOIN SPM_SYS.BASE_USER us on dri.JUDGE_USER_ID=us.id
+        where 1=1
+        <if test="startTime != null and startTime != ''">
+            and DATE_FORMAT(dri.CREATE_TIME, '%Y-%m-%d %H:%i:%s') &gt;= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            and DATE_FORMAT(dri.CREATE_TIME, '%Y-%m-%d %H:%i:%s') &lt;= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="suspectedForbiddenType != null">
+            and dri.SUSPECTED_FORBIDDEN_TYPE = #{suspectedForbiddenType}
+        </if>
+        <if test="suspectedForbiddenSubtype != null">
+            and dri.SUSPECTED_FORBIDDEN_SUBTYPE = #{suspectedForbiddenSubtype}
+        </if>
+        <if test="judgePictureSource != null">
+            and dri.JUDGE_PICTURE_SOURCE = #{judgePictureSource}
+        </if>
+        <if test="handleResult != null">
+            and dri.HANDLE_RESULT = #{handleResult}
+        </if>
+        <if test="ifCheck != null">
+            and dri.IF_CHECK = #{ifCheck}
+        </if>
+        <if test="pointIds!=null and pointIds.size>0">
+            and
+            <foreach open="(" close=")" collection="pointIds" index="index" item="item">
+                <if test="index > 0">
+                    or
+                </if>
+                dri.POINTID = #{item}
+            </foreach>
+        </if>
+        <if test="pointId != null and pointId !=''">
+            and dri.POINTID = #{pointId}
+        </if>
+        order by dri.CREATE_TIME desc limit #{page},#{pagesize}
+    </select>
+
+    <!--查询总数-->
+    <select id="queryTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select
+        count(1)
+        from jzp_oper.DEAL_RESULT_INFO dri
+        FORCE INDEX(dri_index_point_id)
+        where 1=1
+        <if test="startTime != null and startTime != ''">
+            and DATE_FORMAT(dri.FIRST_TIME, '%Y-%m-%d %H:%i:%s') &gt;= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            and DATE_FORMAT(dri.FIRST_TIME, '%Y-%m-%d %H:%i:%s') &lt;= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="suspectedForbiddenType != null">
+            and dri.SUSPECTED_FORBIDDEN_TYPE = #{suspectedForbiddenType}
+        </if>
+        <if test="suspectedForbiddenSubtype != null">
+            and dri.SUSPECTED_FORBIDDEN_SUBTYPE = #{suspectedForbiddenSubtype}
+        </if>
+        <if test="judgePictureSource != null">
+            and dri.JUDGE_PICTURE_SOURCE = #{judgePictureSource}
+        </if>
+        <if test="handleResult != null">
+            and dri.HANDLE_RESULT = #{handleResult}
+        </if>
+        <if test="ifCheck != null">
+            and dri.IF_CHECK = #{ifCheck}
+        </if>
+        <if test="pointIds!=null and pointIds.size>0">
+            and
+            <foreach open="(" close=")" collection="pointIds" index="index" item="item">
+                <if test="index > 0">
+                    or
+                </if>
+                dri.POINTID = #{item}
+            </foreach>
+        </if>
+        <if test="pointId != null and pointId !=''">
+            and dri.POINTID = #{pointId}
+        </if>
+    </select>
+
+
+    <resultMap id="dealResultMap" type="java.util.Map">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="FIRST_TIME" jdbcType="TIMESTAMP" property="firstTime"/>
+        <result column="MISSION_ID" jdbcType="VARCHAR" property="missionId"/>
+        <result column="POINTID" jdbcType="VARCHAR" property="pointid"/>
+        <result column="SN" jdbcType="VARCHAR" property="sn"/>
+        <result column="JUDGE_PICTURE_SOURCE" jdbcType="DECIMAL" property="judgePictureSource"/>
+        <result column="HANDLE_USER_ID" jdbcType="VARCHAR" property="handleUserId"/>
+        <result column="HANDLE_RESULT" jdbcType="DECIMAL" property="handleResult"/>
+        <result column="LOCATION_OF_SUSPECTED_ITEMS" jdbcType="VARCHAR" property="locationOfSuspectedItems"/>
+        <result column="SUSPECTED_FORBIDDEN_TYPE" jdbcType="DECIMAL" property="suspectedForbiddenType"/>
+        <result column="PASSENGER_NAME" jdbcType="VARCHAR" property="passengerName"/>
+        <result column="PASSENGER_ID_CARD" jdbcType="VARCHAR" property="passengerIdCard"/>
+        <result column="SUSPECTED_ITEMS_PICTURE" jdbcType="VARCHAR" property="suspectedItemsPicture"/>
+        <result column="SUSPECTED_ITEMS_VISUAL_PICTURE" jdbcType="VARCHAR" property="suspectedItemsVisualPicture" />
+        <result column="JUDGE_USER_ID" jdbcType="VARCHAR" property="judgeUserId"/>
+        <result column="AUX_SUSPECTED_ITEMS_PICTURE" jdbcType="VARCHAR" property="auxSuspectedItemsPicture"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="IF_CHECK" jdbcType="DECIMAL" property="ifCheck"/>
+        <result column="handle_user_name" jdbcType="VARCHAR" property="handleUserName"/>
+        <result column="station_id" jdbcType="VARCHAR" property="stationId"/>
+        <result column="station_name" jdbcType="VARCHAR" property="stationName"/>
+        <result column="point_name" jdbcType="VARCHAR" property="pointName"/>
+        <result column="SUSPECTED_FORBIDDEN_TYPE_NAME" jdbcType="VARCHAR" property="suspectedForbiddenTypeName"/>
+        <result column="SUSPECTED_FORBIDDEN_SUBTYPE" jdbcType="DECIMAL" property="suspectedForbiddenSubtype"/>
+        <result column="SUSPECTED_FORBIDDEN_SUBTYPE_NAME" jdbcType="VARCHAR" property="suspectedForbiddenSubtypeName"/>
+    </resultMap>
+    <select id="selectDealResult" resultMap="dealResultMap">
+        select dri.*,e.name as handle_user_name,r.id as station_id,r.name as station_name,p.name as point_name,dt.name
+        as SUSPECTED_FORBIDDEN_TYPE_NAME,dv.LABEL_DEFAULT as SUSPECTED_FORBIDDEN_SUBTYPE_NAME
+        from jzp_oper.DEAL_RESULT_INFO dri
+        LEFT join SPM_SYS.BASE_USER u on dri.HANDLE_USER_ID = u.id
+        left join SPM_SYS.TBL_BASE_EMPLOYEE e on u.employ_id = e.id
+        left join SPM_SYS.base_point p on dri.POINTID = p.id
+        left join SPM_SYS.BASE_DEPART r on p.DEPART_ID = r.id
+        left join SPM_SYS.DICT_TYPE dt on cast(dri.SUSPECTED_FORBIDDEN_TYPE as char) = dt.CODE
+        left join SPM_SYS.DICT_VALUE dv on cast(dri.SUSPECTED_FORBIDDEN_SUBTYPE as char) = dv.CODE
+        where 1=1
+        <if test="missionId != null and missionId != ''">
+            and dri.MISSION_ID = #{missionId}
+        </if>
+    </select>
+    <resultMap id="toDayStatisticsResultMap" type="java.util.Map">
+        <result column="HANDLE_USER_ID" jdbcType="VARCHAR" property="operatorUserId"/>
+        <result column="counts" jdbcType="VARCHAR" property="counts"/>
+    </resultMap>
+    <select id="toDayStatistics" resultMap="toDayStatisticsResultMap">
+        select HANDLE_USER_ID,count(MISSION_ID) counts
+        from jzp_oper.DEAL_RESULT_INFO
+        where 1=1
+        <if test="day != null and day != ''">
+            and DATE_FORMAT(CREATE_TIME,'%Y-%m-%d %H:%i:%s') &gt;= CONCAT(#{day},' 00:00:00')
+        </if>
+        <if test="today != null and today != ''">
+            and #{today} &gt;= DATE_FORMAT(CREATE_TIME,'%Y-%m-%d %H:%i:%s')
+        </if>
+        <if test="userId != null and userId != ''">
+            and HANDLE_USER_ID = #{userId}
+        </if>
+        GROUP BY HANDLE_USER_ID
+    </select>
+
+    <resultMap id="todayContrabandResultMap" type="java.util.Map">
+        <result column="fl_name" jdbcType="VARCHAR" property="flName"/>
+        <result column="counts" jdbcType="VARCHAR" property="counts"/>
+    </resultMap>
+    <select id="todayContraband" resultMap="todayContrabandResultMap">
+
+        select fl_name ,IFNULL(sum(cnt), 0) counts from
+        (
+
+        SELECT
+        CASE
+        b.NAME
+        WHEN b.NAME IS NULL THEN
+        b.NAME
+        ELSE b.NAME
+        END fl_name,
+        count(a.SUSPECTED_FORBIDDEN_TYPE) cnt
+        FROM
+        spm_sys.dict_type b
+        LEFT JOIN jzp_oper.deal_result_info a ON b.CODE = cast( a.SUSPECTED_FORBIDDEN_TYPE AS CHAR )
+        WHERE
+        1 = 1
+        and	b.NAME IN ( '管制器具', '爆炸物品', '腐蚀性物品', '枪支子弹', '易燃易爆', '其他物品' )
+        AND DATE_FORMAT( a.create_time, '%Y%m%d' )= DATE_FORMAT( now(), '%Y%m%d' )
+        AND a.HANDLE_RESULT IN ( 1, 3 )
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        b.NAME UNION
+        SELECT
+        '其他物品',
+        IFNULL(sum(cnt), 0)
+        FROM
+        (
+        SELECT
+        CASE
+        b.NAME
+        WHEN b.NAME IS NULL THEN
+        b.NAME
+        ELSE b.NAME
+        END fl_name,
+        count( a.SUSPECTED_FORBIDDEN_TYPE ) cnt
+        FROM
+        spm_sys.dict_type b
+        LEFT JOIN jzp_oper.deal_result_info a ON b.CODE = cast( a.SUSPECTED_FORBIDDEN_TYPE AS CHAR )
+        WHERE
+        1 = 1
+        and	b.NAME IN ( '传染病病原体', '放射性物品', '毒害品')
+        AND DATE_FORMAT( a.create_time, '%Y%m%d' )= DATE_FORMAT( now(), '%Y%m%d' )
+        AND a.HANDLE_RESULT IN ( 1, 3 )
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+        b.NAME ) bb
+        union
+        select case b.name  when  b.name is null then '管制器具'  else b.name  end fl_name ,0 cnt
+        from spm_sys.dict_type b
+        left join jzp_oper.deal_result_info a on
+        b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+        where b.name in('管制器具','爆炸物品','腐蚀性物品','枪支子弹','易燃易爆','其他物品')
+        and DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by b.name
+        union
+        select case b.name  when  b.name is null then '爆炸物品'   end f_name  ,0 cnt
+        from spm_sys.dict_type b
+        left join jzp_oper.deal_result_info a on
+        b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+        where b.name in('管制器具','爆炸物品','腐蚀性物品','枪支子弹','易燃易爆','其他物品')
+        and DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by b.name
+
+        union
+        select case b.name  when  b.name is null then '腐蚀性物品'  end fl_name  ,0 cnt
+        from spm_sys.dict_type b
+        left join jzp_oper.deal_result_info a on
+        b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+        where b.name in('管制器具','爆炸物品','腐蚀性物品','枪支子弹','易燃易爆','其他物品')
+        and DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by b.name
+        union
+        select case b.name  when  b.name is null then '枪支子弹'  end fl_name ,0
+        from spm_sys.dict_type b
+        left join jzp_oper.deal_result_info a on
+        b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+        where b.name in('管制器具','爆炸物品','腐蚀性物品','枪支子弹','易燃易爆','其他物品')
+        and DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by b.name
+        union
+        select case b.name  when  b.name is null then '易燃易爆'   end fl_name ,0 cnt
+        from spm_sys.dict_type b
+        left join jzp_oper.deal_result_info a on
+        b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+        where b.name in('管制器具','爆炸物品','腐蚀性物品','枪支子弹','易燃易爆','其他物品')
+        and DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by b.name
+        union
+        select case b.name  when  b.name is null then '其他物品'   end fl_name  ,0 cnt
+        from spm_sys.dict_type b
+        left join jzp_oper.deal_result_info a on
+        b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+        where b.name in('管制器具','爆炸物品','腐蚀性物品','枪支子弹','易燃易爆','其他物品')
+        and DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by b.name
+
+        ) aa  group by fl_name
+
+  </select>
+
+    <resultMap id="todayContrabandSumResultMap" type="java.util.Map">
+        <result column="sum(cnt)" jdbcType="VARCHAR" property="sum"/>
+    </resultMap>
+    <select id="todayContrabandSum" resultMap="todayContrabandSumResultMap">
+   select sum(cnt) from
+(
+select  case b.name  when  b.name is null then b.name  else b.name  end fl_name ,count(a.SUSPECTED_FORBIDDEN_TYPE) cnt
+                                                          from spm_sys.dict_type b
+                                                      left join jzp_oper.deal_result_info a on
+      b.code=cast(a.SUSPECTED_FORBIDDEN_TYPE as char)
+      where   DATE_FORMAT(a.create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+      and a.HANDLE_RESULT in (1,3)
+        <if test="pointIds!=null and pointIds.size>0">
+            and a.POINTID in
+            <foreach collection="pointIds" index="index" item="item"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+      group by b.name
+
+) aa
+  </select>
+
+</mapper>

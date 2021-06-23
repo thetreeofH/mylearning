@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.LicenceMapper" >
+  <resultMap id="LicenceBaseResultMap" type="com.ts.spm.bizs.entity.admin.Licence" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="AUTHORIZER" property="authorizer" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="BIGINT" />
+    <result column="USER_NUMBER" property="userNumber" jdbcType="DECIMAL" />
+    <result column="KEY" property="key" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="BIGINT" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT_ID" property="crtDeptId" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT" property="crtDept" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT" property="updDept" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_USER_ID" property="delUserId" jdbcType="VARCHAR" />
+    <result column="DEL_USER" property="delUser" jdbcType="VARCHAR" />
+    <result column="DEL_DEPT_ID" property="delDeptId" jdbcType="VARCHAR" />
+    <result column="DEL_DEPT" property="delDept" jdbcType="VARCHAR" />
+    <result column="DEL_TIME" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="BIGINT" />
+  </resultMap>
+</mapper>

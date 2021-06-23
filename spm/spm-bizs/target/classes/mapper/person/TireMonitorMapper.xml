@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.person.TireMonitorMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.person.TireMonitor" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="HIT_TYPE" property="hitType" jdbcType="DECIMAL" />
+    <result column="HIT_PIC" property="hitPic" jdbcType="VARCHAR" />
+    <result column="HIT_TIME" property="hitTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="statResultMap" type="java.util.Map" >
+    <result column="hitCount" property="hitCount" jdbcType="DECIMAL" />
+    <result column="warnCount" property="warnCount" jdbcType="DECIMAL" />
+    <result column="allCount" property="allCount" jdbcType="DECIMAL" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="axisTime" property="axisTime" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getTireMonitorDetail" resultMap="BaseResultMap">
+    SELECT *
+    FROM TBC_TIRE_MONITOR
+    where 1=1
+    <if test="hitType!=null and hitType != ''">
+      AND HIT_TYPE=#{hitType}
+    </if>
+    <if test="time!=null and time != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') = #{time}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    order by HIT_TIME desc
+  </select>
+
+  <select id="getTireMonitorList" resultMap="statResultMap">
+    SELECT DATE_FORMAT(HIT_TIME,'%Y-%m-%d') axisTime,count(CASE WHEN HIT_TYPE=1 THEN 1 END) hitCount,
+    count(CASE WHEN HIT_TYPE=0 THEN 0  END) warnCount,POINT_ID,count(*) allCount
+    FROM TBC_TIRE_MONITOR
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group By DATE_FORMAT(HIT_TIME,'%Y-%m-%d'),POINT_ID
+  </select>
+
+  <select id="getTireMonitorAll" resultMap="statResultMap">
+    SELECT count(CASE WHEN HIT_TYPE=1 THEN 1 END) hitCount,
+    count(CASE WHEN HIT_TYPE=0 THEN 0  END) warnCount,count(*) allCount
+    FROM TBC_TIRE_MONITOR
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+  </select>
+
+  <select id="getTireMonitorByDay" resultMap="statResultMap">
+    SELECT DATE_FORMAT(HIT_TIME,'%Y-%m-%d') axisTime,count(CASE WHEN HIT_TYPE=1 THEN 1 END) hitCount,
+    count(CASE WHEN HIT_TYPE=0 THEN 0  END) warnCount,count(*) allCount
+    FROM TBC_TIRE_MONITOR
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group By DATE_FORMAT(HIT_TIME,'%Y-%m-%d')
+  </select>
+
+  <select id="getTireMonitorByHour" resultMap="statResultMap">
+    SELECT DATE_FORMAT(HIT_TIME,'%H') axisTime,count(CASE WHEN HIT_TYPE=1 THEN 1 END) hitCount,
+    count(CASE WHEN HIT_TYPE=0 THEN 0  END) warnCount,count(*) allCount
+    FROM TBC_TIRE_MONITOR
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group By DATE_FORMAT(HIT_TIME,'%H')
+  </select>
+
+  <select id="getTireMonitorByPoint" resultMap="statResultMap">
+    SELECT count(CASE WHEN HIT_TYPE=1 THEN 1 END) hitCount,
+    count(CASE WHEN HIT_TYPE=0 THEN 0  END) warnCount,POINT_ID,count(*) allCount
+    FROM TBC_TIRE_MONITOR
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(HIT_TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group By POINT_ID
+  </select>
+
+  <select id="getTireMonitorByDepart" resultMap="statResultMap">
+    SELECT p.DEPART_ID,count(CASE WHEN m.HIT_TYPE=1 THEN 1 END) hitCount,
+    count(CASE WHEN m.HIT_TYPE=0 THEN 0  END) warnCount,count(m.ID) allCount
+    FROM TBC_TIRE_MONITOR m,SPM_SYS.BASE_POINT p
+    where m.POINT_ID=p.ID
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(m.HIT_TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(m.HIT_TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  m.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group By p.DEPART_ID
+  </select>
+</mapper>

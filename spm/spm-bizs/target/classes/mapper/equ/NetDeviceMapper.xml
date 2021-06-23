@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.equ.NetDeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.equ.NetDevice" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="POINT_NAME" property="pointName" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="STATION" property="station" jdbcType="VARCHAR" />
+    <result column="PORT" property="port" jdbcType="INTEGER" />
+    <result column="ACT_MODE" property="actMode" jdbcType="INTEGER" />
+    <result column="IP" property="ip" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="DEVICE_NAME" property="deviceName" jdbcType="VARCHAR" />
+    <result column="SUB_SYNC" property="subSync" jdbcType="DECIMAL" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="MODEL_ID" property="modelId" jdbcType="VARCHAR" />
+    <result column="MODEL" property="model" jdbcType="VARCHAR" />
+    <result column="IS_ONLINE" property="isOnline" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, POINT_ID, POINT_NAME, PORT, ACT_MODE, IP, DEVICE_NAME, SUB_SYNC, CRT_TIME, CRT_USER_ID, CRT_USER_NAME,
+    UPD_TIME, UPD_USER_ID, UPD_USER_NAME, TENANT_ID, UPD_DEPT_ID, TYPE_ID, TYPE, MODEL_ID, 
+    MODEL
+  </sql>
+</mapper>

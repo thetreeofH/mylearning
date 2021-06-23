@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.msg.PointWarnPushMapper">
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.msg.PointWarnPush">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="WARN_ID" jdbcType="VARCHAR" property="warnId" />
+    <result column="POINT_ID" jdbcType="VARCHAR" property="pointId" />
+    <result column="POINT" jdbcType="VARCHAR" property="point" />
+    <result column="IS_SEND" jdbcType="INTEGER" property="isSend" />
+    <result column="IS_READ" jdbcType="INTEGER" property="isRead" />
+  </resultMap>
+</mapper>

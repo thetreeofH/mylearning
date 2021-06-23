@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.person.AjyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.person.AjyInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="DECIMAL" property="sex" />
+    <result column="FORK" jdbcType="VARCHAR" property="fork" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="PIC_PATH" jdbcType="VARCHAR" property="picPath" />
+    <result column="F_CHECK" jdbcType="TIMESTAMP" property="fCheck" />
+    <result column="L_CHECK" jdbcType="TIMESTAMP" property="lCheck" />
+    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="SECURITYID" jdbcType="VARCHAR" property="securityid" />
+    <result column="AJCOM" jdbcType="VARCHAR" property="ajcom" />
+    <result column="W_TIME" jdbcType="TIMESTAMP" property="wTime" />
+    <result column="NATIVE_PLACE" jdbcType="VARCHAR" property="nativePlace" />
+    <result column="ROLE" jdbcType="VARCHAR" property="role" />
+    <result column="DEGREE" jdbcType="VARCHAR" property="degree" />
+    <result column="SCHOOL" jdbcType="VARCHAR" property="school" />
+    <result column="POLITICAL" jdbcType="VARCHAR" property="political" />
+    <result column="TEAM" jdbcType="VARCHAR" property="team" />
+    <result column="DEPART_ID" jdbcType="VARCHAR" property="departId" />
+    <result column="BLACK_FLAG" property="blackFlag" jdbcType="DECIMAL" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="addAjyPerson" parameterType="com.ts.spm.bizs.entity.person.AjyInfo" >
+
+    insert into TBC_AJY_LIST(
+        IDCARD,NAME,SEX,FORK,ADDRESS,PIC_PATH,F_CHECK,L_CHECK,BIRTHDAY,SECURITYID,AJCOM,W_TIME,
+        NATIVE_PLACE,ROLE,DEGREE,SCHOOL,POLITICAL,TEAM,DEPART_ID,CRT_TIME
+    )
+    values(
+     #{ajyInfo.idcard},#{avxxjyInfo.name},#{ajyInfo.sex},#{ajyInfo.fork},#{ajyInfo.address},#{ajyInfo.picPath},#{ajyInfo.fCheck}
+    ,#{ajyInfo.lCheck},#{ajyInfo.birthday},#{ajyInfo.securityid},#{ajyInfo.ajcom},#{ajyInfo.wTime},#{ajyInfo.nativePlace},#{ajyInfo.role},#{ajyInfo.degree}
+    ,#{ajyInfo.school},#{ajyInfo.political},#{ajyInfo.team},#{ajyInfo.departId},NOW()
+    )
+
+  </insert>
+
+  <select id="getId" resultType="java.lang.Integer">
+    SELECT nextval('AjyInfo')
+  </select>
+
+  <resultMap id="resultListMap" type="java.util.Map">
+    <result column="ifYoung" property="ifYoung" jdbcType="INTEGER"/>
+    <result column="ifCard" property="ifCard" jdbcType="INTEGER"/>
+    <result column="ifWork" property="ifWork" jdbcType="INTEGER"/>
+    <result column="IDCARD" property="idcard" jdbcType="VARCHAR"/>
+    <result column="NAME" property="name" jdbcType="VARCHAR"/>
+    <result column="SECURITYID" property="securityid" jdbcType="VARCHAR"/>
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="SEX" jdbcType="DECIMAL" property="sex" />
+    <result column="FORK" jdbcType="VARCHAR" property="fork" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="PIC_PATH" jdbcType="VARCHAR" property="picPath" />
+    <result column="F_CHECK" jdbcType="TIMESTAMP" property="fCheck" />
+    <result column="L_CHECK" jdbcType="TIMESTAMP" property="lCheck" />
+    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="NATIVE_PLACE" jdbcType="VARCHAR" property="nativePlace" />
+    <result column="DEPART_ID" jdbcType="VARCHAR" property="departId" />
+    <result column="BLACK_FLAG" property="blackFlag" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <select id="getPersonInfo" resultMap="resultListMap">
+    select CASE WHEN (DATE_FORMAT(NOW(), '%Y') - substr(CONTROL.IDCARD ,7, 4))&gt;=18 THEN '0'
+    WHEN (DATE_FORMAT(NOW(), '%Y') - substr(CONTROL.IDCARD ,7, 4))&lt;18 THEN '1'
+    END as ifYoung,
+    CASE WHEN CONTROL.SECURITYID is not null THEN '0'
+    WHEN CONTROL.SECURITYID is null THEN '1'
+    END as ifCard,
+    CASE WHEN TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())>10 THEN '1'
+    WHEN TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())&lt;=10 THEN '0'
+    END ifWork,
+    control.ID,control.NAME,control.IDCARD,control.SECURITYID,control.SEX,control.FORK,control.ADDRESS,control.PIC_PATH,
+    control.F_CHECK,control.L_CHECK,control.BIRTHDAY,control.NATIVE_PLACE,control.DEPART_ID,control.BLACK_FLAG
+    from TBC_AJY_LIST control
+    where 1=1
+
+    <if test="name!=null and name!=''">
+      and control.NAME like CONCAT(CONCAT('%',#{name}),'%')
+    </if>
+    <if test="company!=null and company!=''">
+      and control.AJCOM like CONCAT(CONCAT('%',#{company}),'%')
+    </if>
+    <if test="cardID!=null and cardID!=''">
+      and control.IDCARD like CONCAT(CONCAT('%',#{cardID}),'%')
+    </if>
+    <if test="securityId!=null and securityId!=''">
+      and control.SECURITYID like CONCAT(CONCAT('%',#{securityId}),'%')
+    </if>
+
+    <if test="ifCard!=null and ifCard!=''">
+      <if test="ifCard==0">
+        and control.SECURITYID is not null
+      </if>
+      <if test="ifCard==1">
+        and control.SECURITYID is null
+      </if>
+    </if>
+
+    <if test="ifYoung!=null and ifYoung!=''">
+      <if test="ifYoung==0">
+        and (DATE_FORMAT(NOW(), '%Y') - substr(control.IDCARD ,7, 4))&gt;=18
+      </if>
+      <if test="ifYoung==1">
+        and (DATE_FORMAT(NOW(), '%Y') - substr(control.IDCARD ,7, 4))&lt;18
+      </if>
+    </if>
+
+    <if test="ifWork!=null and ifWork!=''">
+      <if test="ifWork==0">
+        and TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())&lt;=10
+      </if>
+      <if test="ifWork==1">
+        and TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())>10
+      </if>
+    </if>
+
+    <if test="departIds!=null and departIds.size>0">
+      and control.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+
+    order by control.CRT_TIME desc
+  </select>
+
+  <delete id="deletePersonCard">
+    delete TBC_AJY_LIST
+    where IDCARD=#{idCard}
+  </delete>
+
+  <select id="getPersonByIdCard" resultMap="BaseResultMap">
+    select *
+    from TBC_AJY_LIST
+    where IDCARD=#{idCard}
+  </select>
+
+  <select id="getMonthPerson" resultMap="resultListMap">
+    select CONTROL.*,
+    CASE WHEN TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())>10 THEN '1'
+    WHEN TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())&lt;=10 THEN '0'
+    END ifWork
+    from TBC_AJY_LIST control
+    where 1=1 and control.BLACK_FLAG=0
+    and control.L_CHECK>=DATE_FORMAT(NOW(),'%m') and control.L_CHECK&lt;=last_day(NOW())
+
+    <if test="name!=null and name!=''">
+      and control.NAME like CONCAT(CONCAT('%',#{name}),'%')
+    </if>
+    <if test="cardID!=null and cardID!=''">
+      and control.IDCARD like CONCAT(CONCAT('%',#{cardID}),'%')
+    </if>
+    <if test="ifWork!=null and ifWork!=''">
+      <if test="ifWork==0">
+        and TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())&lt;=10
+      </if>
+      <if test="ifWork==1">
+        and TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())>10
+      </if>
+    </if>
+
+    <if test="departIds!=null and departIds.size>0">
+      and control.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="getNewPerson" resultMap="resultListMap">
+    select CONTROL.*
+    from TBC_AJY_LIST control
+    where 1=1 and control.BLACK_FLAG=0
+    and L_CHECK&gt;=DATE_FORMAT(NOW(),'%m') and L_CHECK&lt;=last_day(NOW()) and F_CHECK&gt;=DATE_FORMAT(NOW(),'%m') and F_CHECK&lt;=LAST_DAY(NOW())
+
+    <if test="name!=null and name!=''">
+      and control.NAME like CONCAT(CONCAT('%',#{name}),'%')
+    </if>
+    <if test="cardID!=null and cardID!=''">
+      and control.IDCARD like CONCAT(CONCAT('%',#{cardID}),'%')
+    </if>
+    <if test="ifWork!=null and ifWork!=''">
+      <if test="ifWork==0">
+        and TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())&lt;=10
+      </if>
+      <if test="ifWork==1">
+        and TIMESTAMPDIFF(DAY,control.L_CHECK,NOW())>10
+      </if>
+    </if>
+
+    <if test="departIds!=null and departIds.size>0">
+      and control.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+  </select>
+
+    <update id="blockAjy" >
+        update TBC_AJY_LIST
+        set BLACK_FLAG=#{blackFlag},UPD_TIME=#{updTime},UPD_USER_ID=#{updUserId},UPD_USER_NAME=#{updUserName}
+        where id=#{id}
+    </update>
+
+  <!-- stat use -->
+  <select id="getPersonInfoByDepartId" resultMap="BaseResultMap">
+    select p.* from TBC_AJY_LIST p
+    where 1=1
+    <if test="name!=null and name!=''">
+      and p.NAME like CONCAT(CONCAT('%',#{name}),'%')
+    </if>
+    <if test="company!=null and company!=''">
+      and p.COMPANY like CONCAT(CONCAT('%',#{company}),'%')
+    </if>
+    <if test="securityId!=null and securityId!=''">
+      and p.SECURITYID=#{securityId}
+    </if>
+    <if test="departIds!=null and departIds.size>0">
+      and p.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+  </select>
+</mapper>

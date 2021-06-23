@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.person.PersonBlackMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.person.PersonBlack" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="CARDID" property="cardid" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="addPersonBlack" parameterType="com.ts.spm.bizs.entity.person.PersonBlack" >
+    insert into TBL_PERSON_BLACK(
+      CARDID,NAME,TIME,REMARK
+    )
+    values(
+      #{personBlack.cardid},#{personBlack.name},#{personBlack.time},#{personBlack.remark}
+    )
+  </insert>
+
+  <delete id="deletePersonBlack">
+    delete from TBL_PERSON_BLACK
+    where cardid=#{idCard}
+  </delete>
+
+</mapper>

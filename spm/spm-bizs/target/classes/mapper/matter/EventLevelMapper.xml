@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.matter.EventLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.matter.EventLevel" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="STATIO_NAME" property="statioName" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT_ID" property="crtDeptId" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CODE, NAME, STATION_ID, STATIO_NAME, MEMO, CRT_TIME, CRT_USER_ID, CRT_USER_NAME, 
+    UPD_TIME, UPD_USER_ID, UPD_USER_NAME, TENANT_ID, CRT_DEPT_ID, UPD_DEPT_ID
+  </sql>
+</mapper>

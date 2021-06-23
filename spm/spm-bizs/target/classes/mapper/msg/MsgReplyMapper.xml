@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.msg.MsgReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.msg.MsgReply" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="MSG_ID" property="msgId" jdbcType="INTEGER" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="REPLY_USER_ID" property="replyUserId" jdbcType="VARCHAR" />
+    <result column="REPLY_USER_NAME" property="replyUserName" jdbcType="VARCHAR" />
+    <result column="READ_STATE" property="readState" jdbcType="INTEGER" />
+    <result column="READ_TIME" property="readTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="DEL_TIME" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_USER_ID" property="delUserId" jdbcType="VARCHAR" />
+    <result column="DEL_USER_NAME" property="delUserName" jdbcType="VARCHAR" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, MSG_ID, CONTENT, REPLY_USER_ID, REPLY_USER_NAME, READ_STATE, READ_TIME, CRT_TIME, 
+    CRT_USER_ID, CRT_USER_NAME, DEL_TIME, DEL_USER_ID, DEL_USER_NAME, DEL_FLAG
+  </sql>
+
+  <select id="getId" resultType="int">
+    select nextval('msgReply')
+  </select>
+</mapper>

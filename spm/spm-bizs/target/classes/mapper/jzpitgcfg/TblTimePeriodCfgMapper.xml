@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpitgcfg.TblTimePeriodCfgMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpitgcfg.TblTimePeriodCfg" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="START_TIME" property="startTime" jdbcType="VARCHAR" />
+    <result column="END_TIME" property="endTime" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="POINT_NAME" property="pointName" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+    <result column="INTELLIGENT_ID" property="intelligentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, POINT_ID, START_TIME, END_TIME, CREATE_TIME, UPDATE_TIME, POINT_NAME, STATION_ID, 
+    STATION_NAME, INTELLIGENT_ID
+  </sql>
+  <select id="query" resultMap="BaseResultMap">
+    select * from jzp_oper.TBL_TIME_PERIOD_CFG
+    where 1=1
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="pointId != null and pointId !=''">
+      and POINT_ID = #{pointId}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.msg.MsgInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.msg.MsgInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="DEPART_NAME" property="departName" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT_ID" property="crtDeptId" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="DEL_USER_ID" property="delUserId" jdbcType="VARCHAR" />
+    <result column="DEL_USER_NAME" property="delUserName" jdbcType="VARCHAR" />
+    <result column="DEL_TIME" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="RECEIVE_DEPT_ID" property="receiveDeptId" jdbcType="VARCHAR" />
+    <result column="RECEIVE_DEPT" property="receiveDept" jdbcType="VARCHAR" />
+    <result column="FINISH_TIME" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="REPLY_FLAG" property="replyFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, TYPE, TITLE, CONTENT, DEPART_ID, DEPART_NAME, CRT_TIME, CRT_USER_ID, CRT_USER_NAME, 
+    CRT_DEPT_ID, UPD_TIME, UPD_USER_ID, UPD_USER_NAME, UPD_DEPT_ID, DEL_USER_ID, DEL_USER_NAME, 
+    DEL_TIME, DEL_FLAG, TENANT_ID, RECEIVE_DEPT_ID, RECEIVE_DEPT, FINISH_TIME
+  </sql>
+
+  <select id="getId" resultType="int">
+    select nextval('msgInfo')
+  </select>
+
+  <select id="selectPage" resultMap="BaseResultMap">
+    select
+    t1.*, t2.READ_STATE readState
+    from tbl_msg_info t1, tbl_msg_receive t2
+    where t1.DEL_FLAG=0 and t1.ID=t2.MSG_ID
+    <if test="type>=0">
+      and t1.TYPE = #{type}
+    </if>
+
+    <if test="title != null and title != ''">
+      and t1.TITLE like CONCAT(CONCAT('%', #{title}),'%')
+    </if>
+    <if test="receiveDeptId != null and receiveDeptId != ''">
+      and t1.RECEIVE_DEPT_ID like CONCAT(CONCAT('%', #{receiveDeptId}),'%')
+    </if>
+    <if test="crtUserId != null and crtUserId != ''">
+      and t2.RECEIVE_USER_ID = #{crtUserId}
+    </if>
+
+    <if test="st!=null and et!=null">
+      AND T1.CRT_TIME BETWEEN #{st} AND #{et}
+    </if>
+
+    <if test="ids!=null and ids.size>0">
+      AND  T1.ID in
+      <foreach collection="ids" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY T1.CRT_TIME DESC
+  </select>
+</mapper>

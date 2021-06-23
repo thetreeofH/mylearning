@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.msg.InnerCheckMapper" >
+  <resultMap id="BaseResultMap" type="java.util.Map" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="DEPART_NAME" property="departName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getDepartByUserName" resultMap="BaseResultMap">
+      select bd.id as depart_id,bd.name as depart_name,bu.id as user_id,tbe.name
+      from SPM_SYS.TBL_BASE_EMPLOYEE tbe
+      left join SPM_SYS.BASE_USER bu on bu.employ_id = tbe.id
+      left join SPM_SYS.BASE_DEPART bd on bu.depart_id = bd.id
+      where 1=1
+   <if test="userName != null and userName != ''">
+     and bu.username = #{userName}
+   </if>
+
+  </select>
+</mapper>

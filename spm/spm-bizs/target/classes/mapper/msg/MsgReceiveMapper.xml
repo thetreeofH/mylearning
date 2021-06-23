@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.msg.MsgReceiveMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.msg.MsgReceive" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="MSG_ID" property="msgId" jdbcType="INTEGER" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="DEPART_NAME" property="departName" jdbcType="VARCHAR" />
+    <result column="RECEIVE_USER_ID" property="receiveUserId" jdbcType="VARCHAR" />
+    <result column="RECEIVE_USER_NAME" property="receiveUserName" jdbcType="VARCHAR" />
+    <result column="READ_TIME" property="readTime" jdbcType="TIMESTAMP" />
+    <result column="READ_STATE" property="readState" jdbcType="INTEGER" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="INTEGER" />
+    <result column="FINISH_STATE" property="finishState" jdbcType="INTEGER" />
+    <result column="FINISH_TIME" property="finishTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, MSG_ID, DEPART_ID, DEPART_NAME, RECEIVE_USER_ID, RECEIVE_USER_NAME, READ_TIME, 
+    READ_STATE, DEL_FLAG
+  </sql>
+  <select id="getId" resultType="int">
+    select nextval('msgReceive')
+  </select>
+</mapper>

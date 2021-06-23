@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.stat.AjyWorkMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.stat.AjyWork" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AJY_IDNO" property="ajyIdno" jdbcType="VARCHAR" />
+    <result column="AJY_NAME" property="ajyName" jdbcType="VARCHAR" />
+    <result column="STIME" property="stime" jdbcType="TIMESTAMP" />
+    <result column="ETIME" property="etime" jdbcType="TIMESTAMP" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="TO_POINT" property="toPoint" jdbcType="DECIMAL" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="CARD_FLAG" property="cardFlag" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>

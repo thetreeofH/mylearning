@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.stat.TblInnerCheckProblemMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.stat.TblInnerCheckProblem" >
+    <result column="PROB_ID" property="probId" jdbcType="INTEGER" />
+    <result column="CHECK_ID" property="checkId" jdbcType="INTEGER" />
+    <result column="PROB_TYPE" property="probType" jdbcType="DECIMAL" />
+    <result column="PROB_SUB_TYPE" property="probSubType" jdbcType="DECIMAL" />
+    <result column="PROB_DESP" property="probDesp" jdbcType="VARCHAR" />
+    <result column="AJY_TYPE" property="ajyType" jdbcType="DECIMAL" />
+    <result column="AJY_TYPE_STR" property="ajyTypeStr" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="addInnerCheckProblem" parameterType="com.ts.spm.bizs.entity.stat.TblInnerCheckProblem" >
+<!--    <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="probId">-->
+<!--      SELECT TBL_INNER_CHECK_PROBLEM_ID_SEQ.NEXTVAL FROM DUAL-->
+<!--    </selectKey>-->
+    insert into TBL_INNER_CHECK_PROBLEM(
+      PROB_ID,CHECK_ID,PROB_TYPE,PROB_SUB_TYPE,PROB_DESP,AJY_TYPE,AJY_TYPE_STR,CRT_TIME,CRT_USER_ID,CRT_USER_NAME,TENANT_ID
+    )
+    values(
+      #{tblInnerCheckProblem.probId},#{tblInnerCheckProblem.checkId},#{tblInnerCheckProblem.probType},#{tblInnerCheckProblem.probSubType},
+      #{tblInnerCheckProblem.probDesp},#{tblInnerCheckProblem.ajyType},#{tblInnerCheckProblem.ajyTypeStr},
+      #{tblInnerCheckProblem.crtTime},#{tblInnerCheckProblem.crtUserId},#{tblInnerCheckProblem.crtUserName},
+      #{tblInnerCheckProblem.tenantId}
+    )
+  </insert>
+
+  <select id="getId" resultType="java.lang.Integer">
+    SELECT nextval('tblInnerCheckProblem')
+  </select>
+
+  <delete id="deleInnerCheckProblem" parameterType="java.lang.Integer">
+    delete from TBL_INNER_CHECK_PROBLEM where CHECK_ID=#{checkId}
+  </delete>
+
+  <select id="getProblemByCheckId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from TBL_INNER_CHECK_PROBLEM where CHECK_ID=#{checkId}
+  </select>
+</mapper>

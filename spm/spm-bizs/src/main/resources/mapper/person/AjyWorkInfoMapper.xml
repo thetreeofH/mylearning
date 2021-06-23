@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.person.AjyWorkInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.person.AjyWorkInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="AJY_IDNO" property="ajyIdno" jdbcType="VARCHAR" />
+    <result column="AJY_NAME" property="ajyName" jdbcType="VARCHAR" />
+    <result column="STIME" property="stime" jdbcType="TIMESTAMP" />
+    <result column="ETIME" property="etime" jdbcType="TIMESTAMP" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="TO_POINT" property="toPoint" jdbcType="DECIMAL" />
+    <result column="CARD_FLAG" property="cardFlag" jdbcType="INTEGER" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="AJY_TYPE" property="ajyType" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="resultList" type="java.util.Map" >
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="AJY_IDNO" property="ajyIdno" jdbcType="VARCHAR" />
+    <result column="AJY_NAME" property="ajyName" jdbcType="VARCHAR" />
+    <result column="STIME" property="stime" jdbcType="TIMESTAMP" />
+    <result column="ETIME" property="etime" jdbcType="TIMESTAMP" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="ifYoung" property="ifYoung" jdbcType="DECIMAL" />
+    <result column="ifCard" property="ifCard" jdbcType="INTEGER" />
+    <result column="workType" property="workType" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="CARD_FLAG" property="cardFlag" jdbcType="INTEGER" />
+    <result column="workSecond" property="workSecond" jdbcType="INTEGER" />
+    <result column="AJY_TYPE" property="ajyType" jdbcType="INTEGER" />
+    <result column="WORK_TYPE" property="workType" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="workcfg" type="java.util.Map" >
+    <result column="INTER_DAY" property="interDay" jdbcType="INTEGER" />
+    <result column="INTER_VAL" property="interVal" jdbcType="INTEGER" />
+    <result column="OFF_TIME" property="offTime" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getPersonWorkList" resultMap="resultList">
+    select CASE WHEN (DATE_FORMAT(NOW(), '%Y') - substr(aw.AJY_IDNO ,7, 4))&gt;=18 THEN '0'
+    WHEN (DATE_FORMAT(NOW(), '%Y') - substr(aw.AJY_IDNO ,7, 4))&lt;18 THEN '1'
+    END as ifYoung,
+    CASE WHEN aw.STIME=aw.ETIME THEN '上班'
+    WHEN aw.STIME!=aw.ETIME THEN '下班'
+    END as workType,
+    IF (ifnull(al.SECURITYID, 0) = 0, 1, 0) ifCard,
+    al.DEPART_ID,aw.ID,aw.AJY_IDNO,aw.AJY_NAME,aw.STIME,
+    CASE WHEN aw.STIME=aw.ETIME THEN NULL ELSE aw.ETIME END as ETIME,
+    aw.POINT_ID,aw.CARD_FLAG,aw.AJY_TYPE
+    from TBC_AJY_LIST al,TBC_AJY_WORK_INFO aw
+    where al.IDCARD=aw.AJY_IDNO
+    <if test="name!=null and name!=''">
+      and aw.AJY_NAME like CONCAT(CONCAT('%',#{name}),'%')
+    </if>
+    <if test="idCard!=null and idCard!=''">
+      and aw.AJY_IDNO like CONCAT(CONCAT('%',#{idCard}),'%')
+    </if>
+
+    <if test="ajyType!=null and ajyType!=''">
+      and aw.AJY_TYPE=#{ajyType}
+    </if>
+
+    <if test="ifCard!=null and ifCard!=''">
+      <if test="ifCard==0">
+        and aw.CARD_FLAG=1
+      </if>
+      <if test="ifCard==1">
+        and aw.CARD_FLAG=0
+      </if>
+
+    </if>
+
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(aw.STIME,'%Y-%m-%d') >=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(aw.STIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+
+    <if test="ifYoung!=null and ifYoung!=''">
+      <if test="ifYoung==0">
+        and (DATE_FORMAT(NOW(), '%Y') - substr(aw.AJY_IDNO ,7, 4))&gt;=18
+      </if>
+      <if test="ifYoung==1">
+        and (DATE_FORMAT(NOW(), '%Y') - substr(aw.AJY_IDNO ,7, 4))&lt;18
+      </if>
+    </if>
+
+    <if test="workType!=null and workType!=''">
+      <if test="workType==0">
+        and aw.STIME=aw.ETIME
+      </if>
+      <if test="workType==1">
+        and aw.STIME!=aw.ETIME
+      </if>
+    </if>
+
+    <if test="departIds!=null and departIds.size>0">
+      and al.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+    order by aw.etime desc
+  </select>
+
+  <!--zhoukun:在岗持证查询-->
+  <select id="getOnWorkData" resultMap="resultList">
+    SELECT
+      aw.AJY_IDNO,
+      al.DEPART_ID,
+      aw.POINT_ID,
+      aw.AJY_NAME,
+      IF (ifnull(AL.SECURITYID, 0) = 0, 1, 0) ifCard,
+      aw.STIME,
+      CASE
+      WHEN aw.STIME = aw.ETIME THEN
+      NULL
+      WHEN aw.STIME != aw.ETIME THEN
+      aw.ETIME
+      END AS ETIME,
+      floor(sum(
+      CASE WHEN aw.ETIME = aw.STIME THEN timestampdiff(second, aw.STIME, str_to_date(#{endTime}, '%Y-%m-%d %H:%i:%s'))
+      ELSE timestampdiff(second, aw.STIME, aw.ETIME) END
+      )) workSecond,
+      aw.WORK_TYPE
+    FROM
+      TBC_AJY_LIST al,
+      TBC_AJY_WORK_INFO aw
+    WHERE
+      al.IDCARD = aw.AJY_IDNO
+      AND aw.STIME >= str_to_date (#{startTime}, '%Y-%m-%d %H:%i:%s')
+      AND str_to_date(#{endTime}, '%Y-%m-%d %H:%i:%s') >= AW.STIME
+    <if test="departIds!=null and departIds.size>0">
+      and al.DEPART_ID IN
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+    GROUP BY
+      aw.AJY_IDNO,
+      al.DEPART_ID,
+      aw.POINT_ID,
+      aw.STIME,
+      ETIME,
+      ifCard,
+      aw.AJY_NAME,
+      aw.WORK_TYPE
+    ORDER BY aw.STIME DESC
+  </select>
+
+  <select id="getPersonWorkStatis" resultMap="resultList">
+    select
+      CASE WHEN (date_format(NOW(), '%Y') - substr(aw.AJY_IDNO ,7, 4))>=18 THEN '0'
+      WHEN (date_format(NOW(), '%Y') - substr(aw.AJY_IDNO ,7, 4)) &lt;18 THEN '1'
+      END as ifYoung,
+      aw.AJY_IDNO,
+      al.DEPART_ID,
+      aw.AJY_NAME,
+      IF (ifnull(AL.SECURITYID, 0) = 0, 1, 0) ifCard
+    from
+      TBC_AJY_LIST al,
+      TBC_AJY_WORK_INFO aw
+    where
+      al.IDCARD=aw.AJY_IDNO
+      and str_to_date(#{endTime}, '%Y-%m-%d %H:%i:%s') >= aw.STIME
+      and aw.STIME >= str_to_date(#{startTime}, '%Y-%m-%d %H:%i:%s')
+    <if test="departIds!=null and departIds.size>0">
+      and al.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+    GROUP BY aw.AJY_IDNO,al.DEPART_ID,ifCard,aw.AJY_NAME
+  </select>
+
+  <!-- delete ? -->
+  <select id="getPersonByIdoTime" resultMap="resultList" >
+    SELECT * from (
+    select  CASE WHEN (DATE_FORMAT(now(), '%Y') - substr(aw.AJY_IDNO ,7, 4))>=18 THEN '0'
+    WHEN (DATE_FORMAT(now(), '%Y') - substr(aw.AJY_IDNO ,7, 4))&lt;18 THEN '1'
+    END as ifYoung,
+    aw.ID,aw.AJY_IDNO,aw.POINT_ID,aw.CARD_FLAG,aw.AJY_NAME,AW.STIME,AW.ETIME
+
+    from TBC_AJY_WORK_INFO aw
+    where 1=1
+    and aw.AJY_IDNO=#{ajyIdno}
+    and str_to_date(#{time},'%Y-%m-%d %H:%i:%S')-AW.STIME=
+    (select min(str_to_date(#{time},'%Y-%m-%d %H:%i:%S')-AW.STIME)
+    from TBC_AJY_WORK_INFO aw
+    where aw.AJY_IDNO=#{ajyIdno}
+
+    <if test="time!=null and time != ''">
+      AND DATE_FORMAT(aw.STIME,'%Y-%m-%d') >=DATE_FORMAT(#{time},'%Y-%m-%d')
+      and DATE_FORMAT(aw.ETIME,'%Y-%m-%d') &lt;=DATE_FORMAT(#{time},'%Y-%m-%d')
+    </if>
+    )
+    ) a   limit 1
+  </select>
+
+  <select id="getPersonWorkTime" resultMap="resultList">
+    select aw.AJY_IDNO,aw.AJY_NAME,aw.POINT_ID,al.DEPART_ID,aw.ETIME,aw.STIME,
+    sum(TIMESTAMPDIFF(SECOND,aw.STIME,aw.ETIME)) as workSecond
+    from TBC_AJY_LIST al,TBC_AJY_WORK_INFO aw
+    where al.IDCARD=aw.AJY_IDNO
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(aw.STIME,'%Y-%m-%d') >=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(aw.ETIME,'%Y-%m-%d %H:%i:%s') &lt;=#{endTime}
+    </if>
+    <if test="departIds!=null and departIds.size>0">
+      and al.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+
+    GROUP BY aw.AJY_IDNO,aw.POINT_ID,al.DEPART_ID
+  </select>
+
+  <select id="workcfg" resultMap="workcfg">
+    SELECT INTER_DAY, INTER_VAL, OFF_TIME FROM TBC_AJY_WORK_CFG
+  </select>
+
+</mapper>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.matter.PointDangerMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.matter.PointDanger" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="DNO" property="dno" jdbcType="VARCHAR" />
+    <result column="MTYPE" property="mtype" jdbcType="VARCHAR" />
+    <result column="STYPE" property="stype" jdbcType="VARCHAR" />
+    <result column="AJY_TYPE" property="ajyType" jdbcType="VARCHAR" />
+    <result column="AJY_NAME" property="ajyName" jdbcType="VARCHAR" />
+    <result column="AJY_IDNO" property="ajyIdno" jdbcType="VARCHAR" />
+    <result column="PSG_NAME" property="psgName" jdbcType="VARCHAR" />
+    <result column="PSG_IDNO" property="psgIdno" jdbcType="VARCHAR" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="X_PIC_PATH" property="xPicPath" jdbcType="VARCHAR" />
+    <result column="PIC_PATH" property="picPath" jdbcType="VARCHAR" />
+    <result column="ITEM_RESULT" property="itemResult" jdbcType="DECIMAL" />
+    <result column="PERSON_RESULT" property="personResult" jdbcType="DECIMAL" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT_ID" property="crtDeptId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="FORBID_TYPE" property="forbidType" jdbcType="VARCHAR" />
+    <result column="NOTE" property="note" jdbcType="VARCHAR" />
+    <result column="INPUT_TYPE" property="inputType" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="ListResultMap" type="java.util.Map" >
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="DNO" property="dno" jdbcType="VARCHAR" />
+    <result column="MTYPE" property="mtype" jdbcType="VARCHAR" />
+    <result column="STYPE" property="stype" jdbcType="VARCHAR" />
+    <result column="AJY_TYPE" property="ajyType" jdbcType="VARCHAR" />
+    <result column="AJY_NAME" property="ajyName" jdbcType="VARCHAR" />
+    <result column="AJY_IDNO" property="ajyIdno" jdbcType="VARCHAR" />
+    <result column="PSG_NAME" property="psgName" jdbcType="VARCHAR" />
+    <result column="PSG_IDNO" property="psgIdno" jdbcType="VARCHAR" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+    <result column="PIC_PATH" property="picPath" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="X_PIC_PATH" property="xPicPath" jdbcType="VARCHAR" />
+    <result column="PERSON_RESULT" property="personResult" jdbcType="INTEGER" />
+    <result column="ITEM_RESULT" property="itemResult" jdbcType="INTEGER" />
+    <result column="FORBID_TYPE" property="forbidType" jdbcType="INTEGER" />
+    <result column="NOTE" property="note" jdbcType="VARCHAR" />
+    <result column="DANGER_COUNT" property="dangerCount" jdbcType="INTEGER" />
+    <result column="PCE_NAME" property="pceName" jdbcType="VARCHAR" />
+    <result column="PCE_IDNO" property="pceIdno" jdbcType="VARCHAR" />
+    <result column="ITEM_WAY" property="itemWay" jdbcType="INTEGER" />
+    <result column="INPUT_TYPE" property="inputType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, DNO, MTYPE, STYPE, AJY_TYPE, AJY_NAME, AJY_IDNO, AJY_IDNO, PSG_NAME, PSG_IDNO, TIME, PIC_PATH,
+    POINT_ID, X_PIC_PATH, ITEM_RESULT, PERSON_RESULT, UPLOAD_FLAG, CRT_TIME, CRT_USER_ID,
+    CRT_DEPT_ID, CRT_USER_NAME, UPD_TIME, UPD_USER_ID, UPD_USER_NAME, UPD_DEPT_ID, TENANT_ID, FORBID_TYPE, NOTE,ITEM_WAY,
+    PCE_NAME,PCE_IDNO,DANGER_COUNT
+
+
+  </sql>
+
+  <select id="getId" resultType="int">
+    select nextval('pointDanger')
+  </select>
+  <select id="getDno" resultType="int">
+    select nextval('pointDangerDno')
+  </select>
+  <select id="getById" resultMap="BaseResultMap">
+    SELECT T1.*,T2.DEPART_ID stationId FROM TBC_POINT_DANGER T1, SPM_SYS.BASE_POINT T2
+    WHERE T1.POINT_ID=T2.ID AND T1.ID=#{id}
+  </select>
+
+  <!--stat-->
+  <select id="contrabandList" resultMap="ListResultMap">
+    select *
+    from TBC_POINT_DANGER
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <if test="mType != null and mType !=''">
+        and MTYPE = #{mType}
+      </if>
+      <if test="ajyName != null and ajyName!=''">
+        AND AJY_NAME like #{ajyName}
+      </if>
+      <if test="dangerId != null and dangerId!=''">
+        AND DNO like #{dangerId}
+      </if>
+      <if test="ajyType != null and ajyType!=''">
+        AND AJY_TYPE=#{ajyType}
+      </if>
+      <if test="psgName != null and psgName!=''">
+        AND PSG_NAME like #{psgName}
+      </if>
+      <if test="psgIdno != null and psgIdno!=''">
+        AND PSG_IDNO like #{psgIdno}
+      </if>
+
+      <if test="startTime!=null and startTime != ''">
+        AND DATE_FORMAT(TIME,'%Y-%m-%d') &gt;= #{startTime}
+      </if>
+      <if test="endTime!=null and endTime != ''">
+        AND DATE_FORMAT(TIME,'%Y-%m-%d') &lt;= #{endTime}
+      </if>
+      <if test="pointIds!=null and pointIds.size>0">
+        and  POINT_ID in
+        <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+          #{item}
+        </foreach>
+      </if>
+    </trim>
+    order by TIME desc
+  </select>
+
+  <select id="getPointDangerCountByPointId" resultType="java.lang.Integer">
+    select IFNULL(count(t1.ID),0)
+    from TBC_POINT_DANGER  t1
+    where 1=1
+    <if test="pointIds!=null and pointIds.size>0">
+      and  t1.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+  </select>
+
+  <select id="getPointDangerCountByDepartId" resultType="java.lang.Integer">
+    select IFNULL(count(t1.ID),0)
+    from TBC_POINT_DANGER  t1,SPM_SYS.BASE_POINT p
+    where t1.`POINT_ID`=p.`ID` and 1=1
+    <if test="departIds!=null and departIds.size>0">
+      and  p.DEPART_ID in
+      <foreach close=")" collection="departIds" index="index" item="departIds" open="(" separator=",">
+        #{departIds}
+      </foreach>
+    </if>
+
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+  </select>
+
+  <select id="statis" resultType="com.ts.spm.bizs.vo.stat.StatTypeCntVo">
+    select t.MTYPE type, COUNT(T.ID) cnt
+    from TBC_POINT_DANGER  t
+    where t.TIME between #{start} and #{end}
+    <if test="pointIds!=null and pointIds.size>0">
+      and  t.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    GROUP BY t.MTYPE
+  </select>
+
+  <resultMap id="statisByTimeResultMap" type="java.util.Map" >
+    <result column="axisTime" property="axisTime" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="statisByDay" resultMap="statisByTimeResultMap">
+    select DATE_FORMAT(pd.TIME,'%Y-%m-%d') as axisTime,IFNULL(count(pd.id),0) as COUNT
+    from TBC_POINT_DANGER pd
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(pd.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(pd.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  pd.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    GROUP BY DATE_FORMAT(pd.TIME,'%Y-%m-%d')
+  </select>
+
+  <select id="statisByHour" resultMap="statisByTimeResultMap">
+    select DATE_FORMAT(pd.TIME,'%H') as axisTime,IFNULL(count(pd.id),0) as COUNT
+    from TBC_POINT_DANGER pd
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(pd.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(pd.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  PD.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    group by DATE_FORMAT(PD.TIME,'%H')
+  </select>
+
+  <resultMap id="statisByDepartResultMap" type="java.util.Map" >
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="statisByDepart" resultMap="statisByDepartResultMap">
+    select IFNULL(count(d.id),0) as COUNT,p.DEPART_ID
+    from TBC_POINT_DANGER d
+    left join SPM_SYS.BASE_POINT p
+    on d.POINT_ID=p.ID
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(d.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(d.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  d.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group by p.DEPART_ID
+  </select>
+
+  <select id="statisByPoint" resultMap="statisByDepartResultMap">
+    select IFNULL(count(d.id),0) as COUNT,d.POINT_ID
+    from TBC_POINT_DANGER d
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(d.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(d.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  d.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group by d.POINT_ID
+  </select>
+
+  <resultMap id="statisByTypeResultMap" type="java.util.Map" >
+    <result column="TYPE_ID" property="typeId" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="statisByType" resultMap="statisByTypeResultMap">
+    select IFNULL(count(id),0) as COUNT,d.MTYPE as TYPE_ID
+    from TBC_POINT_DANGER d
+    where 1=1
+
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(d.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(d.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="pointIds!=null and pointIds.size>0">
+      and  d.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    group by d.MTYPE
+  </select>
+
+  <!-- updater 马居朝  以下为新增-->
+  <resultMap id="departResultMap" type="java.util.Map">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="depart_id" jdbcType="VARCHAR" property="departId" />
+    <result column="depart" jdbcType="VARCHAR" property="departName" />
+  </resultMap>
+  <select id="selectById" resultMap="departResultMap">
+    select id,name, depart_id,depart from SPM_SYS.base_point where id = #{id}
+  </select>
+
+</mapper>

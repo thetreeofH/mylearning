@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpitgcfg.TblNormalConfInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpitgcfg.TblNormalConfInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="point_id" property="pointId" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="VARCHAR" />
+    <result column="level_flag" property="levelFlag" jdbcType="INTEGER" />
+    <result column="state_flag" property="stateFlag" jdbcType="INTEGER" />
+    <result column="point_name" property="pointName" jdbcType="VARCHAR" />
+    <result column="depart_id" property="departId" jdbcType="VARCHAR" />
+    <result column="depart_name" property="departName" jdbcType="VARCHAR" />
+    <result column="tag" property="tag" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="describes" property="describes" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, point_id, times, level_flag, state_flag, point_name, depart_id,
+    depart_name, tag, create_time, update_time, describes, memo
+  </sql>
+  <resultMap id="departResultMap" type="java.util.Map">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="depart_id" jdbcType="VARCHAR" property="departId" />
+    <result column="depart" jdbcType="VARCHAR" property="departName" />
+  </resultMap>
+  <select id="selectById" resultMap="departResultMap">
+    select id,name, depart_id,depart from SPM_SYS.base_point where id = #{pId}
+  </select>
+  <resultMap id="maxCreateTime" type="java.util.Map">
+    <result column="times" jdbcType="VARCHAR" property="times"/>
+    <result column="state_flag" jdbcType="INTEGER" property="stateFlag"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+  </resultMap>
+  <select id="selectMaxCreateTime" resultMap="maxCreateTime">
+    select times,create_time,state_flag from jzp_oper.tbl_normal_conf_info
+    where create_time in
+    ( select MAX(create_time) from jzp_oper.tbl_normal_conf_info) and point_id = #{pointId} and tag = #{tag}
+  </select>
+</mapper>

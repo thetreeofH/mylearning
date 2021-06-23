@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.stat.AutoTipsCountMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.stat.AutoTipsCount" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="INSERT_COUNT" property="insertCount" jdbcType="DECIMAL" />
+    <result column="DETECT_COUNT" property="detectCount" jdbcType="DECIMAL" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="statisResultMap" type="java.util.Map" >
+    <result column="DETECT_COUNT" property="detectCount" jdbcType="INTEGER" />
+    <result column="INSERT_COUNT" property="insertCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="getAutoTipsCountByPointIds" resultMap="statisResultMap">
+    select IFNULL(SUM(B.INSERT_COUNT),0) as INSERT_COUNT,IFNULL(SUM(B.DETECT_COUNT),0) as DETECT_COUNT
+    from spm_oper.TBL_AUTO_TIPS_COUNT B
+    where B.id in (
+    select MAX(A.id) as TIME from (
+    select t1.*,DATE_FORMAT(t1. TIME, '%Y-%m-%d') as day from TBL_AUTO_TIPS_COUNT t1
+    where 1=1
+    <if test="points!=null and points.size>0">
+      and  t1.POINT_ID in
+      <foreach close=")" collection="points" index="index" item="points" open="(" separator=",">
+        #{points}
+      </foreach>
+    </if>
+    <if test="startTime!=null and startTime!=''">
+      and t1.TIME &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="endTime!=null and endTime!=''">
+      AND t1.TIME &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%s')
+    </if>
+    ) A group by A.day
+    )
+  </select>
+</mapper>

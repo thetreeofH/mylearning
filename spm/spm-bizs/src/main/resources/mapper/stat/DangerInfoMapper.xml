@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.stat.DangerInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.stat.DangerInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="XOPT_NAME" property="xoptName" jdbcType="VARCHAR" />
+    <result column="FOUND_TIME" property="foundTime" jdbcType="TIMESTAMP" />
+    <result column="CHECKER_NAME" property="checkerName" jdbcType="VARCHAR" />
+    <result column="CHECKER_RESULT" property="checkerResult" jdbcType="DECIMAL" />
+    <result column="DANGER_TYPE_ID" property="dangerTypeId" jdbcType="VARCHAR" />
+    <result column="DANGER_SUM" property="dangerSum" jdbcType="DECIMAL" />
+    <result column="DANGER_NOTE" property="dangerNote" jdbcType="VARCHAR" />
+    <result column="DEAL_RESULT" property="dealResult" jdbcType="DECIMAL" />
+    <result column="DEAL_NOTE" property="dealNote" jdbcType="VARCHAR" />
+    <result column="PASSANGER" property="passanger" jdbcType="VARCHAR" />
+    <result column="IDCARD" property="idcard" jdbcType="VARCHAR" />
+    <result column="DETENTIONDAY" property="detentionday" jdbcType="DECIMAL" />
+    <result column="REGISTER_ID" property="registerId" jdbcType="VARCHAR" />
+    <result column="DEAL_TYPE" property="dealType" jdbcType="DECIMAL" />
+    <result column="XPIC_PATH" property="xpicPath" jdbcType="VARCHAR" />
+    <result column="EVENT_ID" property="eventId" jdbcType="VARCHAR" />
+    <result column="IS_READ" property="isRead" jdbcType="DECIMAL" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, POINT_ID, XOPT_NAME, FOUND_TIME, CHECKER_NAME, CHECKER_RESULT, DANGER_TYPE_ID, 
+    DANGER_SUM, DANGER_NOTE, DEAL_RESULT, DEAL_NOTE, PASSANGER, IDCARD, DETENTIONDAY, 
+    REGISTER_ID, DEAL_TYPE, XPIC_PATH, EVENT_ID, IS_READ, CRT_TIME, CRT_USER_ID, CRT_USER_NAME, 
+    UPD_TIME, UPD_USER_ID, UPD_USER_NAME, TENANT_ID
+  </sql>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.matter.DrillPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.matter.DrillPlan" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="PLAN_LEVEL" property="planLevel" jdbcType="VARCHAR" />
+    <result column="PLAN_MONTH" property="planMonth" jdbcType="VARCHAR" />
+    <result column="PLAN_START_TIME" property="planStartTime" jdbcType="TIMESTAMP" />
+    <result column="PLAN_END_TIME" property="planEndTime" jdbcType="TIMESTAMP" />
+    <result column="REAL_START_TIME" property="realStartTime" jdbcType="TIMESTAMP" />
+    <result column="REAL_END_TIME" property="realEndTime" jdbcType="TIMESTAMP" />
+    <result column="PLAN_PERSON_NUM" property="planPersonNum" jdbcType="INTEGER" />
+    <result column="REAL_PERSON_NUM" property="realPersonNum" jdbcType="INTEGER" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="VERIFY" property="verify" jdbcType="INTEGER" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT_ID" property="crtDeptId" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="DEPART" property="depart" jdbcType="VARCHAR" />
+    <result column="SCORE" property="score" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getList" resultMap="BaseResultMap">
+    SELECT
+    T1.*, t2.NAME DEPART
+    from TBL_DRILL_PLAN t1, SPM_SYS.BASE_DEPART t2
+    where T1.DEPART_ID=T2.ID
+    <if test="title!=''">
+      AND T1.TITLE LIKE CONCAT(CONCAT('%', #{title}),'%')
+    </if>
+    <if test="month!=''">
+      AND T1.PLAN_MONTH =#{month}
+    </if>
+    <if test="start!=null and end!=null">
+      AND T1.TRIGGER_TIME BETWEEN #{start} AND #{end}
+    </if>
+    <if test="departIds!=null and departIds.size>0">
+      AND  T2.DEPART_ID in
+      <foreach collection="departIds" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY T1.CRT_TIME DESC
+  </select>
+</mapper>

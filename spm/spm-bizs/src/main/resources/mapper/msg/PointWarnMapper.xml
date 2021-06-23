@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.msg.PointWarnMapper">
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.msg.PointWarn">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="WARN_ID" jdbcType="VARCHAR" property="warnId" />
+    <result column="SEND_USER" jdbcType="VARCHAR" property="sendUser" />
+    <result column="SEND_DEPT" jdbcType="VARCHAR" property="sendDept" />
+    <result column="SEND_TIME" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="WARN_TIME" jdbcType="TIMESTAMP" property="warnTime" />
+    <result column="WARN_PLACE" jdbcType="VARCHAR" property="warnPlace" />
+    <result column="WARN_RANGE" jdbcType="VARCHAR" property="warnRange" />
+    <result column="WARN_CONTENT" jdbcType="VARCHAR" property="warnContent" />
+    <result column="WARN_STEP" jdbcType="VARCHAR" property="warnStep" />
+    <result column="WARN_NEXT" jdbcType="VARCHAR" property="warnNext" />
+
+    <result column="STATION" jdbcType="VARCHAR" property="station" />
+    <result column="STATION_ID" jdbcType="VARCHAR" property="stationId" />
+    <result column="LINE" jdbcType="VARCHAR" property="line" />
+    <result column="LINE_ID" jdbcType="VARCHAR" property="lineId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    WARN_ID, SEND_USER, SEND_DEPT, SEND_TIME, WARN_TIME, WARN_PLACE, WARN_RANGE, WARN_CONTENT, 
+    WARN_STEP, WARN_NEXT, STATION, STATION_ID, LINE, LINE_ID
+  </sql>
+</mapper>

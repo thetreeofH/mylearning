@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzplog.TblOnlineTimeMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzplog.TblOnlineTime" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="LOGOUT_TIME" property="logoutTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="statisticsResultMap" type="java.util.Map">
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="ONLINETIME" property="onlineTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, USER_ID, USER_NAME, LOGIN_TIME, LOGOUT_TIME, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <select id="selectMaxUpdateTime" resultMap="BaseResultMap">
+    select a.* from jzp_oper.TBL_ONLINE_TIME a ,
+    (select user_id,max(UPDATE_TIME) as update_time from TBL_ONLINE_TIME where 1=1
+    <if test="userId != null and userId != ''">
+     and USER_ID = #{userId}
+    </if>
+    group by user_id  ) b
+    where a.user_id=b.user_id and a.update_time=b.update_time
+  </select>
+
+  <select id="statistics" resultMap="statisticsResultMap">
+    select user_id,user_name,ROUND((sum(logout_time - login_time)/60),3) as onlineTime
+    from jzp_oper.TBL_ONLINE_TIME
+    where 1=1
+    <if test="startDate != null and startDate != ''">
+      and DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') >= #{startDate}
+    </if>
+    <if test="endDate != null and endDate != ''">
+     and #{endDate} >= DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="userId != null and userId != ''">
+    and user_id = #{userId}
+    </if>
+    GROUP BY user_id,user_name
+  </select>
+
+</mapper>

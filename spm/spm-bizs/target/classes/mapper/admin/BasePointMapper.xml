@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.BasePointMapper" >
+  <resultMap id="BasePointBaseResultMap" type="com.ts.spm.bizs.entity.admin.BasePoint" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ENTRY" property="entry" jdbcType="VARCHAR" />
+    <result column="GATESUM" property="gatesum" jdbcType="INTEGER" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="DEPART" property="depart" jdbcType="VARCHAR" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="DELETE_FLAG" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="DATE_FLAG" property="dateFlag" jdbcType="VARCHAR" />
+    <result column="DATE_FLAG" property="dateFlag" jdbcType="VARCHAR" />
+    <result column="VALID_FLAG" property="validFlag" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="BasePointResultMap0" type="java.util.Map" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ENTRY" property="entry" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="station" property="station" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="line" property="line" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectByDepartid" parameterType="com.ts.spm.bizs.entity.admin.BasePoint" resultMap="BasePointResultMap0">
+    select
+      t1.ID, T1.CODE, T1.ENTRY, T1.NAME, T1.STATUS, T2.NAME station, T3.NAME area, T4.NAME line
+    from SPM_SYS.BASE_POINT T1, SPM_SYS.BASE_DEPART T2, SPM_SYS.BASE_DEPART T3, SPM_SYS.BASE_DEPART T4
+    WHERE
+      T1.DEPART_ID=T2.ID and T2.PARENT_ID=T3.ID AND T3.PARENT_ID=T4.ID AND T4.PARENT_ID='-1'
+      AND T1.DELETE_FLAG!='1'
+      <if test="departId!=null and departId!=''">
+        AND T1.DEPART_ID=#{departId}
+      </if>
+      <if test="name!=null and name!=''">
+        AND T1.NAME like #{name}
+      </if>
+      <if test="entry!=null and entry!=''">
+        AND T1.ENTRY = #{entry}
+      </if>
+      <if test="status!=null and status!=''">
+        AND T1.STATUS = #{status}
+      </if>
+    </select>
+
+    <resultMap id="BasePointResultMap1" type="java.util.Map" >
+      <id column="ID" property="id" jdbcType="VARCHAR" />
+      <result column="CODE" property="code" jdbcType="VARCHAR" />
+      <result column="NAME" property="name" jdbcType="VARCHAR" />
+      <result column="ENTRY" property="entry" jdbcType="VARCHAR" />
+      <result column="STATUS" property="status" jdbcType="VARCHAR" />
+      <result column="DEPART_ID" property="depart_id" jdbcType="VARCHAR" />
+      <result column="UPD_TIME" property="upd_time" jdbcType="VARCHAR" />
+      <result column="station" property="station" jdbcType="VARCHAR" />
+      <result column="isOnline" property="isOnline" jdbcType="VARCHAR" />
+      <result column="GATESUM" property="gatesum" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="selectByDepartids" resultMap="BasePointResultMap1">
+      select
+        t1.ID, T1.CODE, T1.ENTRY, T1.NAME, T1.STATUS, T1.DEPART_ID, T1.UPD_TIME,T1.GATESUM, T2.NAME station
+      from
+      SPM_SYS.BASE_POINT T1, SPM_SYS.BASE_DEPART T2
+      WHERE
+        T1.DELETE_FLAG!='1' AND  T1.DEPART_ID=T2.ID AND T2.TYPE='3'
+        <if test="name!=null and name!=''">
+          AND T1.NAME like CONCAT(CONCAT('%',#{name}),'%')
+        </if>
+        <if test="entry!=null and entry!=''">
+          AND T1.ENTRY LIKE CONCAT(CONCAT('%',#{entry}),'%')
+        </if>
+        <if test="status!=null and status!=''">
+          AND T1.STATUS = #{status}
+        </if>
+        <if test="stationIds!=null and stationIds.size>0">
+          and  T1.DEPART_ID in
+          <foreach collection="stationIds" item="item" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+        </if>
+        order by T1.CRT_TIME desc
+    </select>
+
+  <!--point details give up use. who used? -->
+  <select id="selectObjectById" resultType="com.ts.spm.bizs.vo.admin.PointVo">
+    SELECT t1.*, T2.IS_ONLINE isOnline from SPM_SYS.BASE_POINT t1 LEFT JOIN SPM_OPER.TBC_DEVICE_INFO t2 on T1."ID"=T2.POINT_ID where T1."ID"=#{id};
+  </select>
+
+  <resultMap id="BasePointResultByDepart" type="java.util.Map" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="depart_id" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getAllPointByDepart" resultMap="BasePointResultByDepart">
+    SELECT
+     ID,CODE,NAME,DEPART_ID
+    FROM
+     SPM_SYS.BASE_POINT
+    WHERE
+     DEPART_ID IN (
+      SELECT
+       ID
+      FROM
+      SPM_SYS.BASE_DEPART where  FIND_IN_SET(id,SPM_SYS.get_child_depart_list( #{departId}))
+      AND ID IN (
+       SELECT
+        DEPART_ID
+       FROM
+        SPM_SYS.BASE_USER_DEPART
+       WHERE
+        user_id = #{userId}
+      )
+      and DELETE_FLAG!='1'
+     )
+  </select>
+</mapper>

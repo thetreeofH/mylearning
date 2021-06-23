@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: mysqlDev
+
+eureka:
+  instance:
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+    # docker 部署开启,记得将IP修改为部署所在服务器的外网IP
+    prefer-ip-address: true
+#    ip-address: 47.98.38.25
+  client:
+    serviceUrl:
+      #            defaultZone: http://127.0.0.1:8761/eureka/
+      # docker 部署开启,记得将IP修改为部署所在服务器的外网IP
+      defaultZone: http://${EUREKA_HOST:127.0.0.1}:${EUREKA_PORT:8761}/eureka/

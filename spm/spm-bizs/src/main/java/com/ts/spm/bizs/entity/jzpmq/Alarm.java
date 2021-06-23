@@ -1,0 +1,171 @@
+package com.ts.spm.bizs.entity.jzpmq;
+/**
+ *updater 马居朝
+ * 新增实体类picPath和它的方法
+ */
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.*;
+
+
+public class Alarm {
+    //报警时间
+    private Date AlarmTime;
+    //安检点id
+    private String pointId;
+    //判图来源
+    private Integer judgePictureSource;
+    //安检员id
+    private String handleUserId;
+    //安检员姓名
+    private String handleUserName;
+    //处置结果【0放行（无违禁品）1:乘客放弃物品进站 2:转乘其他交通工具 3:报警】
+    private Integer handleResult;
+    //违禁品主类型
+    private Integer suspectedForbiddenType;
+    //违禁品主类型名称
+    private String suspectedForbiddenTypeName;
+    //违禁品子类型
+    private Integer suspectedForbiddenSubtype;
+    //违禁品子类型名称
+    private String suspectedForbiddenSubtypeName;
+    //乘客姓名
+    private String passengerName;
+    //乘客身份证号
+    private String passengerIdCard;
+    //违禁品X光机图片
+    private String suspectedItemsPicture;
+    //备注
+    private String memo;
+    //处置方式【0：人工处置，1：超时自动处置】
+    private String handleMode;
+
+    private String picPath;
+
+    public Date getAlarmTime() {
+        return AlarmTime;
+    }
+
+    public void setAlarmTime(Date alarmTime) {
+        AlarmTime = alarmTime;
+    }
+
+    public String getPointId() {
+        return pointId;
+    }
+
+    public void setPointId(String pointId) {
+        this.pointId = pointId;
+    }
+
+    public Integer getJudgePictureSource() {
+        return judgePictureSource;
+    }
+
+    public void setJudgePictureSource(Integer judgePictureSource) {
+        this.judgePictureSource = judgePictureSource;
+    }
+
+    public String getHandleUserId() {
+        return handleUserId;
+    }
+
+    public void setHandleUserId(String handleUserId) {
+        this.handleUserId = handleUserId;
+    }
+
+    public String getHandleUserName() {
+        return handleUserName;
+    }
+
+    public void setHandleUserName(String handleUserName) {
+        this.handleUserName = handleUserName;
+    }
+
+    public Integer getHandleResult() {
+        return handleResult;
+    }
+
+    public void setHandleResult(Integer handleResult) {
+        this.handleResult = handleResult;
+    }
+
+    public Integer getSuspectedForbiddenType() {
+        return suspectedForbiddenType;
+    }
+
+    public void setSuspectedForbiddenType(Integer suspectedForbiddenType) {
+        this.suspectedForbiddenType = suspectedForbiddenType;
+    }
+
+    public Integer getSuspectedForbiddenSubtype() {
+        return suspectedForbiddenSubtype;
+    }
+
+    public void setSuspectedForbiddenSubtype(Integer suspectedForbiddenSubtype) {
+        this.suspectedForbiddenSubtype = suspectedForbiddenSubtype;
+    }
+
+    public String getPassengerName() {
+        return passengerName;
+    }
+
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
+    }
+
+    public String getPassengerIdCard() {
+        return passengerIdCard;
+    }
+
+    public void setPassengerIdCard(String passengerIdCard) {
+        this.passengerIdCard = passengerIdCard;
+    }
+
+    public String getSuspectedItemsPicture() {
+        return suspectedItemsPicture;
+    }
+
+    public void setSuspectedItemsPicture(String suspectedItemsPicture) {
+        this.suspectedItemsPicture = suspectedItemsPicture;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getHandleMode() {
+        return handleMode;
+    }
+
+    public void setHandleMode(String handleMode) {
+        this.handleMode = handleMode;
+    }
+    public String getSuspectedForbiddenTypeName() {
+        return suspectedForbiddenTypeName;
+    }
+
+    public void setSuspectedForbiddenTypeName(String suspectedForbiddenTypeName) {
+        this.suspectedForbiddenTypeName = suspectedForbiddenTypeName;
+    }
+
+    public String getSuspectedForbiddenSubtypeName() {
+        return suspectedForbiddenSubtypeName;
+    }
+
+    public void setSuspectedForbiddenSubtypeName(String suspectedForbiddenSubtypeName) {
+        this.suspectedForbiddenSubtypeName = suspectedForbiddenSubtypeName;
+    }
+    public String getPicPath() {
+        return picPath;
+    }
+
+    public void setPicPath(String picPath) {
+        this.picPath = picPath;
+    }
+
+}

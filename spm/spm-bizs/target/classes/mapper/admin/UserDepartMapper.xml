@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.UserDepartMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.admin.UserDepart" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="getDepartUsers" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select case when exists(select 1 from SPM_SYS.BASE_USER u where u.DEPART_ID=#{id} and u.is_deleted = '0' and u.is_disabled = '0') then 1 else 0 end from dual;
+  </select>
+
+  <delete id="delDepartUsers" parameterType="java.lang.String">
+     delete FROM SPM_SYS.BASE_USER_DEPART where USER_ID=#{userId}
+  </delete>
+</mapper>

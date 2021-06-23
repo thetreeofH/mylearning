@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.up.SecurityDeviceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.up.SecurityDeviceInfo" >
+    <id column="DEV_ID" property="devId" jdbcType="VARCHAR" />
+    <result column="DEV_NAME" property="devName" jdbcType="VARCHAR" />
+    <result column="DEV_TYPE" property="devType" jdbcType="VARCHAR" />
+    <result column="DEV_IP" property="devIp" jdbcType="VARCHAR" />
+    <result column="DEV_PORT" property="devPort" jdbcType="INTEGER" />
+    <result column="DEV_USER" property="devUser" jdbcType="VARCHAR" />
+    <result column="DEV_PSWD" property="devPswd" jdbcType="VARCHAR" />
+    <result column="DEV_CHL" property="devChl" jdbcType="INTEGER" />
+    <result column="ISVIDEO" property="isvideo" jdbcType="INTEGER" />
+    <result column="USE_TYPE" property="useType" jdbcType="INTEGER" />
+    <result column="REC_TYPE" property="recType" jdbcType="INTEGER" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="IS_ONLINE" property="isOnline" jdbcType="INTEGER" />
+    <result column="FAULT_TYPE" property="faultType" jdbcType="INTEGER" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="CRT_DEPT_ID" property="crtDeptId" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="LAST_ONLINE_TIME" property="lastOnlineTime" jdbcType="TIMESTAMP" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="DEVICE_MODEL" property="deviceModel" jdbcType="VARCHAR" />
+    <result column="DEVICE_SOURCE" property="deviceSource" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    T1.*
+    from
+    TBC_DEVICE_SUB_INFO T1
+    WHERE
+     DEV_TYPE = '160'
+    AND T1.POINT_ID = #{pointId}
+  </select>
+</mapper>

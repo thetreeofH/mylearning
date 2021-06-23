@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.stat.DayRegisterMapper">
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.stat.DayRegister">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" jdbcType="INTEGER" property="id" />
+    <result column="POINT_ID" jdbcType="VARCHAR" property="pointId" />
+    <result column="TIME" jdbcType="TIMESTAMP" property="time" />
+    <result column="CHECK_ORG" jdbcType="VARCHAR" property="checkOrg" />
+    <result column="CHECK_USER" jdbcType="VARCHAR" property="checkUser" />
+    <result column="OPERATING_COMPANY" jdbcType="VARCHAR" property="operatingCompany" />
+    <result column="SECURITY_COMPANY" jdbcType="VARCHAR" property="securityCompany" />
+    <result column="INSPECTION_TYPE" jdbcType="DECIMAL" property="inspectionType" />
+    <result column="PROBLEM_DETAIL" jdbcType="VARCHAR" property="problemDetail" />
+    <result column="SIGN_PATH" jdbcType="VARCHAR" property="signPath" />
+    <result column="DEL_TAG" jdbcType="INTEGER" property="delTag" />
+    <result column="DEL_USER_ID" jdbcType="VARCHAR" property="delUserId" />
+    <result column="DEL_TIME" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="OPERAT_SIGN_PATH" jdbcType="VARCHAR" property="operatSignPath" />
+    <result column="SECURITY_SIGN_PATH" jdbcType="VARCHAR" property="securitySignPath" />
+    <result column="OPERAT_PERSON" jdbcType="VARCHAR" property="operatPerson" />
+    <result column="SECURITY_PERSON" jdbcType="VARCHAR" property="securityPerson" />
+    <result column="CRT_TIME" jdbcType="TIMESTAMP" property="crtTime" />
+    <result column="CRT_USER_ID" jdbcType="VARCHAR" property="crtUserId" />
+    <result column="CRT_USER_NAME" jdbcType="VARCHAR" property="crtUserName" />
+    <result column="UPD_TIME" jdbcType="TIMESTAMP" property="updTime" />
+    <result column="UPD_USER_ID" jdbcType="VARCHAR" property="updUserId" />
+    <result column="UPD_USER_NAME" jdbcType="VARCHAR" property="updUserName" />
+    <result column="DEL_USER_NAME" jdbcType="VARCHAR" property="delUserName" />
+    <result column="TENANT_ID" jdbcType="VARCHAR" property="tenantId" />
+    <result column="INSERT_COUNT" jdbcType="INTEGER" property="insertCount" />
+    <result column="DETECT_COUNT" jdbcType="INTEGER" property="detectCount" />
+    <result column="PLAN_COUNT" jdbcType="INTEGER" property="planCount" />
+    <result column="REAL_COUNT" jdbcType="INTEGER" property="realCount" />
+    <result column="CARD_COUNT" jdbcType="INTEGER" property="cardCount" />
+    <result column="DEPART_ID" jdbcType="VARCHAR" property="departId" />
+  </resultMap>
+
+  <resultMap id="resultMap" type="java.util.Map">
+    <result column="ID" jdbcType="INTEGER" property="id" />
+    <result column="POINT_ID" jdbcType="VARCHAR" property="pointId" />
+    <result column="TIME" jdbcType="TIMESTAMP" property="time" />
+    <result column="CHECK_ORG" jdbcType="VARCHAR" property="checkOrg" />
+    <result column="CHECK_USER" jdbcType="VARCHAR" property="checkUser" />
+    <result column="OPERATING_COMPANY" jdbcType="VARCHAR" property="operatingCompany" />
+    <result column="SECURITY_COMPANY" jdbcType="VARCHAR" property="securityCompany" />
+    <result column="INSPECTION_TYPE" jdbcType="DECIMAL" property="inspectionType" />
+    <result column="PROBLEM_DETAIL" jdbcType="VARCHAR" property="problemDetail" />
+    <result column="SIGN_PATH" jdbcType="VARCHAR" property="signPath" />
+    <result column="DEL_TAG" jdbcType="INTEGER" property="delTag" />
+    <result column="DEL_USER_ID" jdbcType="VARCHAR" property="delUserId" />
+    <result column="DEL_TIME" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="OPERAT_SIGN_PATH" jdbcType="VARCHAR" property="operatSignPath" />
+    <result column="SECURITY_SIGN_PATH" jdbcType="VARCHAR" property="securitySignPath" />
+    <result column="OPERAT_PERSON" jdbcType="VARCHAR" property="operatPerson" />
+    <result column="SECURITY_PERSON" jdbcType="VARCHAR" property="securityPerson" />
+    <result column="CRT_TIME" jdbcType="TIMESTAMP" property="crtTime" />
+    <result column="CRT_USER_ID" jdbcType="VARCHAR" property="crtUserId" />
+    <result column="CRT_USER_NAME" jdbcType="VARCHAR" property="crtUserName" />
+    <result column="UPD_TIME" jdbcType="TIMESTAMP" property="updTime" />
+    <result column="UPD_USER_ID" jdbcType="VARCHAR" property="updUserId" />
+    <result column="UPD_USER_NAME" jdbcType="VARCHAR" property="updUserName" />
+    <result column="DEL_USER_NAME" jdbcType="VARCHAR" property="delUserName" />
+    <result column="TENANT_ID" jdbcType="VARCHAR" property="tenantId" />
+    <result column="INSERT_COUNT" jdbcType="INTEGER" property="insertCount" />
+    <result column="DETECT_COUNT" jdbcType="INTEGER" property="detectCount" />
+    <result column="PLAN_COUNT" jdbcType="INTEGER" property="planCount" />
+    <result column="REAL_COUNT" jdbcType="INTEGER" property="realCount" />
+    <result column="CARD_COUNT" jdbcType="INTEGER" property="cardCount" />
+    <result column="DEPART_ID" jdbcType="VARCHAR" property="departId" />
+  </resultMap>
+
+  <select id="getId" resultType="java.lang.Integer">
+    select nextval('dayRegister')
+  </select>
+
+  <select id="getDayRegisterList" resultMap="resultMap">
+    select dr.*
+    from TBL_SUBWAY_DAY_REGISTER dr
+    WHERE  dr.DEL_TAG=0
+
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(dr.TIME,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(dr.TIME,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+
+    <if test="probType!=null and probType!=''">
+      and dr.id in(select REGISTER_ID from TBL_SUBWAY_DAY_PROBLEM where PROBLEM_TYPE_ID=#{probType})
+    </if>
+    <if test="checkOrg!=null and checkOrg!=''">
+      and dr.CHECK_ORG like CONCAT(CONCAT('%',#{checkOrg}),'%')
+    </if>
+    <if test="checker!=null and checker!=''">
+      and dr.CHECK_USER like CONCAT(CONCAT('%',#{checker}),'%')
+    </if>
+    <if test="checkType!=null and checkType!=''">
+      and dr.INSPECTION_TYPE=#{checkType}
+    </if>
+    <if test="operatingCompanyId!=null and operatingCompanyId!=''">
+      and dr.OPERATING_COMPANY=#{operatingCompanyId}
+    </if>
+    <if test="securityCompanyId!=null and securityCompanyId!=''">
+      and dr.SECURITY_COMPANY=#{securityCompanyId}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  dr.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    order  by dr.TIME desc
+  </select>
+
+  <resultMap id="statisResultMap" type="java.util.Map" >
+    <result column="DETECT_COUNT" property="detectCount" jdbcType="INTEGER" />
+    <result column="INSERT_COUNT" property="insertCount" jdbcType="INTEGER" />
+    <result column="REAL_COUNT" property="realCount" jdbcType="INTEGER" />
+    <result column="PLAN_COUNT" property="planCount" jdbcType="INTEGER" />
+    <result column="CARD_COUNT" property="cardCount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="getTipsCountByPointIds" resultMap="statisResultMap">
+    select IFNULL(SUM(INSERT_COUNT),0) as INSERT_COUNT,IFNULL(SUM(DETECT_COUNT),0) as DETECT_COUNT
+    from TBL_SUBWAY_DAY_REGISTER t1
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+    <if test="points!=null and points.size>0">
+      and  t1.POINT_ID in
+      <foreach close=")" collection="points" index="index" item="points" open="(" separator=",">
+        #{points}
+      </foreach>
+    </if>
+
+  </select>
+
+  <select id="getPersonCountByPointIds" resultMap="statisResultMap">
+    select IFNULL(SUM(t1.PLAN_COUNT),0) as PLAN_COUNT,IFNULL(SUM(t1.REAL_COUNT),0) as REAL_COUNT
+    from TBL_SUBWAY_DAY_REGISTER t1
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+    <if test="points!=null and points.size>0">
+      and  t1.POINT_ID in
+      <foreach close=")" collection="points" index="index" item="points" open="(" separator=",">
+        #{points}
+      </foreach>
+    </if>
+
+  </select>
+
+  <select id="getCardCountByPointIds" resultMap="statisResultMap">
+    select IFNULL(SUM(t1.REAL_COUNT),0) as REAL_COUNT,IFNULL(SUM(t1.CARD_COUNT),0) as CARD_COUNT
+    from TBL_SUBWAY_DAY_REGISTER t1
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+    <if test="points!=null and points.size>0">
+      and  t1.POINT_ID in
+      <foreach close=")" collection="points" index="index" item="points" open="(" separator=",">
+        #{points}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="getTipsCountByDepartIds" resultMap="statisResultMap">
+    select IFNULL(SUM(INSERT_COUNT),0) as INSERT_COUNT,IFNULL(SUM(DETECT_COUNT),0) as DETECT_COUNT
+    from TBL_SUBWAY_DAY_REGISTER t1
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+    <if test="departs!=null and departs.size>0">
+      and  t1.DEPART_ID in
+      <foreach close=")" collection="departs" index="index" item="departs" open="(" separator=",">
+        #{departs}
+      </foreach>
+    </if>
+
+  </select>
+
+  <select id="getPersonCountByDepartIds" resultMap="statisResultMap">
+    select IFNULL(SUM(t1.PLAN_COUNT),0) as PLAN_COUNT,IFNULL(SUM(t1.REAL_COUNT),0) as REAL_COUNT
+    from TBL_SUBWAY_DAY_REGISTER t1
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+    <if test="departs!=null and departs.size>0">
+      and  t1.DEPART_ID in
+      <foreach close=")" collection="departs" index="index" item="departs" open="(" separator=",">
+        #{departs}
+      </foreach>
+    </if>
+
+  </select>
+
+  <select id="getCardCountByDepartIds" resultMap="statisResultMap">
+    select IFNULL(SUM(t1.REAL_COUNT),0) as REAL_COUNT,IFNULL(SUM(t1.CARD_COUNT),0) as CARD_COUNT
+    from TBL_SUBWAY_DAY_REGISTER t1
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &gt;=#{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      and DATE_FORMAT(t1.TIME,'%Y-%m-%d') &lt;=#{endTime}
+    </if>
+    <if test="departs!=null and departs.size>0">
+      and  t1.DEPART_ID in
+      <foreach close=")" collection="departs" index="index" item="departs" open="(" separator=",">
+        #{departs}
+      </foreach>
+    </if>
+  </select>
+</mapper>

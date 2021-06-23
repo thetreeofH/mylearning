@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.equ.SecurityDeviceRepairMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.equ.SecurityDeviceRepair" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DEVICE_TYPE" property="deviceType" jdbcType="VARCHAR" />
+    <result column="DEVICE_MODEL" property="deviceModel" jdbcType="VARCHAR" />
+    <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR" />
+    <result column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="POINT" property="point" jdbcType="VARCHAR" />
+    <result column="DEVICE_TYPE_ID" property="deviceTypeId" jdbcType="VARCHAR" />
+    <result column="DEVICE_MODEL_ID" property="deviceModelId" jdbcType="VARCHAR" />
+    <result column="CALL_PERSON" property="callPerson" jdbcType="VARCHAR" />
+    <result column="RECORD_PERSON" property="recordPerson" jdbcType="VARCHAR" />
+    <result column="MENDING_TIME" property="mendingTime" jdbcType="TIMESTAMP" />
+    <result column="MENDING_TYPE" property="mendingType" jdbcType="VARCHAR" />
+    <result column="REPAIR_REASON" property="repairReason" jdbcType="VARCHAR" />
+    <result column="REPAIR_TIME" property="repairTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="UPD_DEPT_ID" property="updDeptId" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="STATION" property="station" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, DEVICE_TYPE, DEVICE_MODEL, DEVICE_CODE, DEVICE_ID, POINT_ID, DEVICE_TYPE_ID, 
+    DEVICE_MODEL_ID, CALL_PERSON, RECORD_PERSON, MENDING_TIME, MENDING_TYPE, REPAIR_REASON, 
+    REPAIR_TIME, CRT_TIME, CRT_USER_ID, CRT_USER_NAME, UPD_TIME, UPD_USER_ID, UPD_USER_NAME, 
+    TENANT_ID, STATION_ID, STATION
+  </sql>
+
+  <select id="selectGroup" resultType="com.ts.spm.bizs.vo.equ.RepairVo">
+    select
+    COUNT(1) cnt1, DEVICE_TYPE deviceType
+    from
+    TBL_SECURITY_DEVICE_REPAIR
+    WHERE
+    1=1
+    <if test="start!=null and end!=null">
+      AND REPAIR_TIME between #{start} and #{end}
+    </if>
+    <if test="type!=''">
+      AND DEVICE_TYPE = #{type}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach collection="pointIds" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    GROUP BY DEVICE_TYPE
+  </select>
+</mapper>

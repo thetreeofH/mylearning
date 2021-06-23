@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpitgcfg.TblSwitchConfInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpitgcfg.TblSwitchConfInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="point_id" property="pointId" jdbcType="VARCHAR" />
+    <result column="state_flag" property="stateFlag" jdbcType="INTEGER" />
+    <result column="point_name" property="pointName" jdbcType="VARCHAR" />
+    <result column="depart_id" property="departId" jdbcType="VARCHAR" />
+    <result column="depart_name" property="departName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, point_id, state_flag, point_name, depart_id, depart_name, create_time, update_time, 
+    memo
+  </sql>
+</mapper>

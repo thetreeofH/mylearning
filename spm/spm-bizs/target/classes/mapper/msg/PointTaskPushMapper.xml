@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.msg.PointTaskPushMapper">
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.msg.PointTaskPush">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TASK_ID" jdbcType="VARCHAR" property="taskId" />
+    <result column="POINT_ID" jdbcType="VARCHAR" property="pointId" />
+    <result column="POINT" jdbcType="VARCHAR" property="point" />
+    <result column="IS_SEND" jdbcType="INTEGER" property="isSend" />
+    <result column="IS_FINISH" jdbcType="INTEGER" property="isFinish" />
+    <result column="FINISH_TIME" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="FEEDBACK" jdbcType="VARCHAR" property="feedback" />
+    <result column="STATION_ID" jdbcType="VARCHAR" property="stationId" />
+    <result column="STATION" jdbcType="VARCHAR" property="station" />
+    <result column="LINE_ID" jdbcType="VARCHAR" property="lineId" />
+    <result column="LINE" jdbcType="VARCHAR" property="line" />
+    <result column="FEEDPERSON" jdbcType="VARCHAR" property="feedperson" />
+  </resultMap>
+</mapper>

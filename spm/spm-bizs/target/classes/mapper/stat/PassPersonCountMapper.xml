@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.stat.PassPersonCountMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.stat.PassPersonCount" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="INC_COUNT" property="incCount" jdbcType="DECIMAL" />
+    <result column="INC_FCOUNT" property="incFcount" jdbcType="DECIMAL" />
+    <result column="INC_BCOUNT" property="incBcount" jdbcType="DECIMAL" />
+    <result column="INC_ACOUNT" property="incAcount" jdbcType="DECIMAL" />
+    <result column="COUNT_DATE" property="countDate" jdbcType="TIMESTAMP" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+    <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+    <result column="PASS_YEAR" property="passYear" jdbcType="DECIMAL" />
+    <result column="PASS_MONTH" property="passMonth" jdbcType="DECIMAL" />
+    <result column="PASS_DAY" property="passDay" jdbcType="DECIMAL" />
+    <result column="PASS_HOUR" property="passHour" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <resultMap id="listResult" type="java.util.Map" >
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="INC_COUNT" property="incCount" jdbcType="DECIMAL" />
+    <result column="INC_FCOUNT" property="incFcount" jdbcType="DECIMAL" />
+    <result column="INC_BCOUNT" property="incBcount" jdbcType="DECIMAL" />
+    <result column="INC_ACOUNT" property="incAcount" jdbcType="DECIMAL" />
+    <result column="COUNT_DATE" property="countDate" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getPassList" resultMap="listResult">
+    select sum(b.INC_FCOUNT) INC_FCOUNT,sum(b.INC_BCOUNT) INC_BCOUNT,sum(B.INC_ACOUNT) INC_ACOUNT,IFNULL(sum(abs(b.INC_FCOUNT)+abs(b.INC_BCOUNT)),0) as INC_COUNT,
+    b.POINT_ID,DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') COUNT_DATE
+    from TBC_PASS_PERSON_COUNT b,SPM_SYS.BASE_POINT p
+    where b.POINT_ID=p.ID
+
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  b.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+
+    GROUP BY b.POINT_ID,DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d')
+
+    ORDER BY DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') desc
+  </select>
+
+
+  <resultMap id="statisResultMap" type="java.util.Map" >
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="cnt" property="cnt" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="statis" resultMap="statisResultMap">
+    select t.STATION_ID, sum(t.INC_COUNT) cnt
+    from TBC_PASS_PERSON_COUNT  t
+    where t.COUNT_DATE BETWEEN #{start} AND #{end}
+    <if test="pointIds!=null and pointIds.size>0">
+      and  t.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+      GROUP BY t.STATION_ID
+    </if>
+  </select>
+
+  <resultMap id="statisByTimeResultMap" type="java.util.Map" >
+    <result column="axisTime" property="axisTime" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="statisByHour" resultMap="statisByTimeResultMap">
+    select DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d %H') as axisTime,IFNULL(sum(abs(b.INC_FCOUNT)+abs(b.INC_BCOUNT)),0) as COUNT
+    from TBC_PASS_PERSON_COUNT b
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  b.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    GROUP BY DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d %H')
+  </select>
+
+  <select id="statisByDay" resultMap="statisByTimeResultMap">
+    select DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') as axisTime,IFNULL(sum(abs(b.INC_FCOUNT)+abs(b.INC_BCOUNT)),0) as COUNT
+    from TBC_PASS_PERSON_COUNT b
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  b.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    GROUP BY DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d')
+  </select>
+
+  <select id="statisByDaysHour" resultMap="statisByTimeResultMap">
+    select sum(a.pass) COUNT,a.dayHour as axisTime
+    from
+    (select IFNULL(sum(abs(INC_FCOUNT)+abs(INC_BCOUNT)),0) as pass, DATE_FORMAT(COUNT_DATE, '%H')  as dayHour
+    from TBC_PASS_PERSON_COUNT
+    where 1=1
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(COUNT_DATE,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(COUNT_DATE,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    GROUP BY POINT_ID, DATE_FORMAT(COUNT_DATE, '%H')) as a
+    GROUP BY a.dayHour
+  </select>
+
+
+  <resultMap id="statisByDepartResultMap" type="java.util.Map" >
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="statisByDepart" resultMap="statisByDepartResultMap">
+    select IFNULL(sum(abs(b.INC_FCOUNT)+abs(b.INC_BCOUNT)),0) as COUNT, p.DEPART_ID
+    from TBC_PASS_PERSON_COUNT b,SPM_SYS.BASE_POINT p
+    where b.POINT_ID=p.ID
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  b.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    GROUP BY p.DEPART_ID
+  </select>
+
+  <select id="statisByPoint" resultMap="statisByDepartResultMap">
+    select IFNULL(sum(abs(b.INC_FCOUNT)+abs(b.INC_BCOUNT)),0) as COUNT, b.POINT_ID
+    from TBC_PASS_PERSON_COUNT b,SPM_SYS.BASE_POINT p
+    where b.POINT_ID=p.ID
+    <if test="startTime!=null and startTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &gt;= #{startTime}
+    </if>
+    <if test="endTime!=null and endTime != ''">
+      AND DATE_FORMAT(b.COUNT_DATE,'%Y-%m-%d') &lt;= #{endTime}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  b.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="pointIds" open="(" separator=",">
+        #{pointIds}
+      </foreach>
+    </if>
+    GROUP BY b.POINT_ID
+  </select>
+
+  <select id="statis2" resultType="int">
+    select IFNULL(sum(abs(t.INC_FCOUNT)+abs(t.INC_BCOUNT)),0)
+    from TBC_PASS_PERSON_COUNT  t
+    where t.COUNT_DATE BETWEEN #{start} AND #{end}
+    <if test="pointIds!=null and pointIds.size>0">
+      and  t.POINT_ID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+  </select>
+</mapper>

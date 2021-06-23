@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpmq.PictureFigureTaskInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpmq.PictureFigureTaskInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="FIRST_TIME" property="firstTime" jdbcType="TIMESTAMP" />
+    <result column="MISSION_ID" property="missionId" jdbcType="VARCHAR" />
+    <result column="POINTID" property="pointid" jdbcType="VARCHAR" />
+    <result column="SN" property="sn" jdbcType="VARCHAR" />
+    <result column="X_RAY_MACHINE_PICTURE" property="xRayMachinePicture" jdbcType="VARCHAR" />
+    <result column="NATURAL_LIGHT_PICTURES" property="naturalLightPictures" jdbcType="VARCHAR" />
+    <result column="X-AUX_RAY_MACHINE_PICTURE" property="XAuxRayMachinePicture" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, FIRST_TIME, MISSION_ID, POINTID, SN, X_RAY_MACHINE_PICTURE, NATURAL_LIGHT_PICTURES, X-AUX_RAY_MACHINE_PICTURE,
+    CREATE_TIME, UPDATE_TIME, MEMO, ATTR1, ATTR2, ATTR3, ATTR4, ATTR5, ATTR6
+  </sql>
+  <resultMap id="queryResultMap" type="java.util.Map">
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="MISSION_ID" property="missionId" jdbcType="VARCHAR" />
+    <result column="POINTID" property="pointid" jdbcType="VARCHAR" />
+    <result column="X_RAY_MACHINE_PICTURE" property="xRayMachinePicture" jdbcType="VARCHAR" />
+    <result column="NATURAL_LIGHT_PICTURES" property="naturalLightPictures" jdbcType="VARCHAR" />
+    <result column="X_AUX_RAY_MACHINE_PICTURE" property="XAuxRayMachinePicture" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="FIRST_TIME" property="firstTime" jdbcType="TIMESTAMP" />
+    <result column="point_name" property="pointName" jdbcType="VARCHAR" />
+    <result column="station_id" property="stationId" jdbcType="VARCHAR" />
+    <result column="station_name" property="stationName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="query" resultMap="queryResultMap">
+    select
+    pft.ID,
+    pft.MISSION_ID,
+    pft.POINTID,
+    pft.X_RAY_MACHINE_PICTURE,d
+    pft.X_AUX_RAY_MACHINE_PICTURE,
+    pft.NATURAL_LIGHT_PICTURES,
+    pft.FIRST_TIME,
+    r.id as station_id,
+    r.name as station_name,
+    p.name as point_name
+    from jzp_oper.PICTURE_FIGURE_TASK_INFO pft
+    FORCE INDEX(pfti_index_first_time)
+    FORCE INDEX(pfti_index_point_id)
+    left join SPM_SYS.base_point p on pft.POINTID = p.id
+    left join SPM_SYS.BASE_DEPART r on p.DEPART_ID = r.id
+    where 1=1
+    <if test="startTime != null and startTime != ''">
+      and DATE_FORMAT(pft.FIRST_TIME, '%Y-%m-%d %H:%i:%s')  &gt;= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="endTime!=null and endTime!=''">
+      and DATE_FORMAT(pft.FIRST_TIME, '%Y-%m-%d %H:%i:%s') &lt;= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  pft.POINTID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="pointId != null and pointId !=''">
+      and pft.POINTID = #{pointId}
+    </if>
+    order by pft.FIRST_TIME desc limit #{page},#{pagesize}
+  </select>
+
+  <!--查询总数-->
+  <select id="selectTotalCount" resultType="java.lang.Integer">
+    select count(1) from jzp_oper.PICTURE_FIGURE_TASK_INFO pft
+    where 1=1
+    <if test="startTime != null and startTime != ''">
+      and DATE_FORMAT(pft.FIRST_TIME, '%Y-%m-%d %H:%i:%s')  &gt;= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="endTime!=null and endTime!=''">
+      and DATE_FORMAT(pft.FIRST_TIME, '%Y-%m-%d %H:%i:%s') &lt;= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and  pft.POINTID in
+      <foreach close=")" collection="pointIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="pointId != null and pointId !=''">
+      and pft.POINTID = #{pointId}
+    </if>
+  </select>
+</mapper>

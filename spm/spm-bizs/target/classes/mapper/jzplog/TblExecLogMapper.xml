@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.jzplog.TblExecLogMapper">
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzplog.TblExecLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="EXC_ID" jdbcType="VARCHAR" property="excId" />
+    <result column="EXC_REQU_PARAM" jdbcType="VARCHAR" property="excRequParam" />
+    <result column="OPER_METHOD" jdbcType="VARCHAR" property="operMethod" />
+    <result column="EXC_NAME" jdbcType="VARCHAR" property="excName" />
+    <result column="EXC_MESSAGE" jdbcType="VARCHAR" property="excMessage" />
+    <result column="OPER_USER_ID" jdbcType="VARCHAR" property="operUserId" />
+    <result column="OPER_USER_NAME" jdbcType="VARCHAR" property="operUserName" />
+    <result column="OPER_URI" jdbcType="VARCHAR" property="operUri" />
+    <result column="OPER_IP" jdbcType="VARCHAR" property="operIp" />
+    <result column="OPER_CREATE_TIME" jdbcType="TIMESTAMP" property="operCreateTime" />
+    <result column="DEPART_ID" jdbcType="VARCHAR" property="departId" />
+    <result column="TENANT_ID" jdbcType="VARCHAR" property="tenantId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    EXC_ID, EXC_REQU_PARAM, OPER_METHOD, EXC_NAME, EXC_MESSAGE, OPER_USER_ID, OPER_USER_NAME, 
+    OPER_URI, OPER_IP, OPER_CREATE_TIME, DEPART_ID, TENANT_ID
+  </sql>
+
+</mapper>

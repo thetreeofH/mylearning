@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.GroupUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.admin.GroupUser" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />
+    <result column="CRT_HOST" property="crtHost" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_NAME" property="updName" jdbcType="VARCHAR" />
+    <result column="UPD_HOST" property="updHost" jdbcType="VARCHAR" />
+    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+    <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
+    <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="addGroupUser" parameterType="com.ts.spm.bizs.entity.admin.GroupUser">
+    insert into SPM_SYS.base_group_leader (
+       id,group_id,user_id,tenant_id,CRT_TIME,CRT_USER,CRT_NAME
+    )
+    values(
+       #{groupUser.id},#{groupUser.groupId},#{groupUser.userId},#{groupUser.tenantId},#{groupUser.crtTime},#{groupUser.crtUser},#{groupUser.crtName}
+    )
+
+  </insert>
+  <update id="updateGroupUser" >
+    update SPM_SYS.base_group_leader
+    set group_id=#{groupUser.groupId},tenant_id=#{groupUser.tenantId},UPD_TIME=#{groupUser.updTime},UPD_USER=#{groupUser.updUser},UPD_NAME=#{groupUser.updName}
+    where user_id=#{userId}
+  </update>
+
+  <delete id="delGroupUser" >
+    delete FROM SPM_SYS.base_group_leader where USER_ID=#{userId}
+  </delete>
+</mapper>

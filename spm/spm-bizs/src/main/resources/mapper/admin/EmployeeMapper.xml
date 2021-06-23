@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.admin.Employee" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="CARDNO" property="cardno" jdbcType="VARCHAR" />
+    <result column="EMPLOYEE_LEVEL" property="employeeLevel" jdbcType="VARCHAR" />
+    <result column="IFUSE" property="ifuse" jdbcType="CHAR" />
+    <result column="TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="FAX" property="fax" jdbcType="VARCHAR" />
+    <result column="POSTAL" property="postal" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="DEL_USER_ID" property="delUserId" jdbcType="VARCHAR" />
+    <result column="DEL_USER_NAME" property="delUserName" jdbcType="VARCHAR" />
+    <result column="DEL_TIME" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="DECIMAL" />
+    <result column="DEPART_ID" property="departId" jdbcType="VARCHAR" />
+    <result column="POSITION" property="position" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getEmployeeList" resultMap="BaseResultMap">
+    SELECT e.*
+    FROM SPM_SYS.TBL_BASE_EMPLOYEE e
+    left JOIN  SPM_SYS.BASE_DEPART d ON d.ID = e.DEPART_ID
+    WHERE e.DEL_FLAG=0
+    <if test="name!=null and name!=''">
+      and e.NAME like CONCAT(CONCAT('%',#{name}),'%')
+    </if>
+    <if test="cardno!=null and cardno!=''">
+      and e.CARDNO like CONCAT(CONCAT('%',#{cardno}),'%')
+    </if>
+    <if test="sex!=null">
+      and e.SEX=#{sex}
+    </if>
+    <if test="position!=null and position!=''">
+      and e.POSITION=#{position}
+    </if>
+
+    
+    <if test="departids!=null and departids.size>0">
+      and  e.DEPART_ID in
+      <foreach collection="departids" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    order by e.ID asc
+  </select>
+
+  <update id="delEmployee" >
+    update SPM_SYS.TBL_BASE_EMPLOYEE
+    set DEL_FLAG=1,DEL_USER_ID=#{delUserId},DEL_USER_NAME=#{delUserName},DEL_TIME=#{delTime}
+    where id=#{id}
+
+  </update>
+
+  <select id="getUserEmployId"  resultMap="BaseResultMap"  parameterType="java.lang.String">
+    SELECT e.* FROM SPM_SYS.TBL_BASE_EMPLOYEE e
+    WHERE EXISTS (select 1 from SPM_SYS.BASE_USER u where u.EMPLOY_ID=e.ID and u.is_deleted = '0' and u.is_disabled = '0' )
+    AND e.ID=#{id}
+
+  </select>
+
+
+</mapper>

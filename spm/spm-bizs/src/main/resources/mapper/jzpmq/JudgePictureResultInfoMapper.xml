@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpmq.JudgePictureResultInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpmq.JudgePictureResultInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="FIRST_TIME" property="firstTime" jdbcType="TIMESTAMP" />
+    <result column="MISSION_ID" property="missionId" jdbcType="VARCHAR" />
+    <result column="POINTID" property="pointid" jdbcType="VARCHAR" />
+    <result column="SN" property="sn" jdbcType="VARCHAR" />
+    <result column="JUDGE_PICTURE_USER_ID" property="judgePictureUserId" jdbcType="VARCHAR" />
+    <result column="LOCATION_OF_SUSPECTED_ITEMS" property="locationOfSuspectedItems" jdbcType="VARCHAR" />
+    <result column="SUSPECTED_FORBIDDEN_TYPE" property="suspectedForbiddenType" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+    <result column="SUSPECTED_FORBIDDEN_SUBTYPE" property="suspectedForbiddenSubtype" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, FIRST_TIME, MISSION_ID, POINTID, SN, JUDGE_PICTURE_USER_ID, LOCATION_OF_SUSPECTED_ITEMS, 
+    SUSPECTED_FORBIDDEN_TYPE, CREATE_TIME, UPDATE_TIME, MEMO, ATTR1, ATTR2, ATTR3, ATTR4, 
+    ATTR5, ATTR6, SUSPECTED_FORBIDDEN_SUBTYPE
+  </sql>
+
+  <select id="query" resultType="Map">
+    SELECT
+    jpri.FIRST_TIME AS "fotstTime",
+    jpri.POINTID AS "pointld",
+    tbe.NAME AS "Name",
+    jpri.SN AS "sn",
+    jpri.JUDGE_PICTURE_USER_ID AS
+    "judgePictureUserId",
+    jpri.LOCATION_OF_SUSPECTED_ITEMS AS
+    "locationOfSuspectedItems",
+    jpri.SUSPECTED_FORBIDDEN_TYPE AS
+    "suspectedForbiddenType",
+    pfti.X_RAY_MACHINE_PICTURE AS
+    "xRayMachinePicture",
+    pfti.NATURAL_LIGHT_PICTURES AS
+    "naturalLightPictures"
+    FROM
+    jzp_oper.JUDGE_PICTURE_RESULT_INFO jpri,
+    jzp_oper.PICTURE_FIGURE_TASK_INFO pfti,
+    SPM_SYS.BASE_USER bu,
+    SPM_SYS.TBL_BASE_EMPLOYEE tbe
+    WHERE
+    jpri.MISSION_ID = pfti.MISSION_ID
+    AND jpri.JUDGE_PICTURE_USER_ID = bu.id
+    AND tbe.id = bu.EMPLOY_ID
+    <if test="startTime!=null and startTime!=''">
+      and DATE_FORMAT(jpri.FIRST_TIME, '%Y-%m-%d %H:%i:%s') >=
+      #{startTime}
+    </if>
+    <if test="endTime!=null and endTime!=''">
+      and #{endTime} >= DATE_FORMAT(jpri.FIRST_TIME, '%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="judgePictureName != null and judgePictureName != ''">
+      and tbe.NAME like '%${judgePictureName}%'
+    </if>
+    <if test="suspectedForbiddenType != null">
+      and jpri.SUSPECTED_FORBIDDEN_TYPE = #{suspectedForbiddenType}
+    </if>
+    <if test="pointIds!=null and pointIds.size>0">
+      and jpri.POINTID in
+      <foreach collection="pointIds" index="index" item="item"
+               open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="pointId != null and pointId !=''">
+      and jpri.POINTID = #{pointId}
+    </if>
+    ORDER BY
+    jpri.FIRST_TIME DESC
+  </select>
+  <select id="selectByMissionId" resultMap="BaseResultMap">
+    ID, FIRST_TIME, MISSION_ID, POINTID, SN, JUDGE_PICTURE_USER_ID, LOCATION_OF_SUSPECTED_ITEMS,
+    SUSPECTED_FORBIDDEN_TYPE, CREATE_TIME, UPDATE_TIME, MEMO, ATTR1, ATTR2, ATTR3, ATTR4,
+    ATTR5, ATTR6, SUSPECTED_FORBIDDEN_SUBTYPE from jzp_oper.JUDGE_PICTURE_RESULT_INFO
+    where 1=1
+    <if test="missionId != null and missionId != ''">
+      and MISSION_ID = #{missionId}
+    </if>
+  </select>
+</mapper>

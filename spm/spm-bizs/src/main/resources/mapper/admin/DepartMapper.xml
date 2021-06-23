@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ts.spm.bizs.mapper.admin.DepartMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ts.spm.bizs.entity.admin.Depart" id="departMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="code" column="code"/>
+        <result property="path" column="path"/>
+        <result property="nameOfOffice" column="name_of_office"/>
+        <result property="type" column="type"/>
+        <result property="organizationAbbreviation" column="organization_abbreviation"/>
+        <result property="tissueCoding" column="tissue_coding"/>
+        <result property="address" column="address"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="remark" column="remark"/>
+        <result property="sort" column="sort"/>
+        <result property="crtUserName" column="crt_user_name"/>
+        <result property="crtUserId" column="crt_user_id"/>
+        <result property="crtTime" column="crt_time"/>
+        <result property="updUserName" column="upd_user_name"/>
+        <result property="updUserId" column="upd_user_id"/>
+        <result property="updTime" column="upd_time"/>
+        <result property="attr1" column="attr1"/>
+        <result property="attr2" column="attr2"/>
+        <result property="attr3" column="attr3"/>
+        <result property="attr4" column="attr4"/>
+        <result property="attr5" column="attr5"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="policeId" column="police_id"/>
+        <result column="STATUS" property="status" jdbcType="CHAR" />
+        <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
+        <result column="COMPANY_ID" property="companyId" jdbcType="VARCHAR" />
+        <result column="TEL" property="tel" jdbcType="VARCHAR" />
+        <result column="DUTY_PERSON" property="dutyPerson" jdbcType="VARCHAR" />
+        <result column="RUN_COMPANY_ID" property="runCompanyId" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="insertDepartUser">
+      insert into SPM_SYS.base_depart_user (id,user_id,depart_id,tenant_id) values (#{id},#{userId},#{departId},#{tenantId})
+    </insert>
+    <delete id="deleteDepartUser">
+      delete from SPM_SYS.base_depart_user where depart_id = #{departId} and user_id = #{userId}
+    </delete>
+    <select id="selectDepartUsers" resultType="com.ts.spm.bizs.entity.admin.User">
+      select u.name,u.username,u.id,u.sex,u.description,u.depart_id from SPM_SYS.base_depart d
+          inner join SPM_SYS.base_depart_user bdu
+        on bdu.depart_id = d.id
+          inner join
+        SPM_SYS.base_user u
+        on bdu.user_id = u.id
+      where bdu.depart_id = #{departId}
+       <if test="userName!=null">
+        and u.name like CONCAT(CONCAT('%',#{userName}),'%')
+        and u.is_deleted = '0'
+        and u.is_disabled = '0'
+       </if>
+    </select>
+    <select id="getDepartIdByName" resultType="com.ts.spm.bizs.entity.person.AjyInfo" parameterType="java.lang.String">
+        SELECT a.id as departId, b.NAME as ajcom
+        FROM SPM_SYS.BASE_DEPART a LEFT JOIN SPM_SYS.TBL_SUBWAY_SECURITY_COMPANY b ON a.COMPANY_ID = b.ID
+        WHERE a.name like CONCAT(CONCAT('%',#{name}),'%') limit 1
+    </select>
+    <select id="userByDepart" resultType="com.ts.spm.bizs.vo.admin.UserVo">
+        SELECT
+        bu. NAME,
+        bu.username,
+        bu.id,
+        bu.sex,
+        bu.attr3,
+        bu.description,
+        bu.depart_id as departId
+        FROM
+        SPM_SYS.base_user bu
+        WHERE
+        bu.is_deleted='0' and bu.status='1'
+        <if test="item!=null and item.size>0">
+          and bu.depart_id in
+            <foreach collection="item" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="jobCode!=null and jobCode!=''">
+            and  find_in_set(#{jobCode},bu.attr3) > 0
+        </if>
+        <if test="useritem!=null and useritem.size>0">
+            and  bu.id in
+            <foreach collection="useritem" index="index" item="useritem" open="(" separator="," close=")">
+                #{useritem}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="organListByPolice" resultType="com.ts.spm.bizs.entity.admin.Depart" parameterType="com.ts.spm.bizs.vo.admin.DepartVo">
+        select *
+        from SPM_SYS.base_depart
+        where 1=1
+        <if test="pd.policeIds != null and pd.policeIds.size>0">
+            and police_id in
+            <foreach collection="pd.policeIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="pd.types != null and pd.types.size>0">
+            and type in
+            <foreach collection="pd.types" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="parentAllDeparts" resultType="com.ts.spm.bizs.entity.admin.Depart" parameterType="com.ts.spm.bizs.entity.admin.Depart">
+        SELECT * FROM SPM_SYS.base_depart where FIND_IN_SET(id,SPM_SYS.get_child_depart_list(#{pd.id})) > 0
+    </select>
+
+    <select id="childAllDeparts" resultType="com.ts.spm.bizs.entity.admin.Depart" parameterType="com.ts.spm.bizs.entity.admin.Depart">
+        SELECT * FROM SPM_SYS.base_depart where FIND_IN_SET(id,SPM_SYS.get_child_depart_list(#{pd.id})) > 0
+    </select>
+
+    <select id="selectByParent" resultType="com.ts.spm.bizs.entity.admin.Depart" parameterType="com.ts.spm.bizs.entity.admin.Depart">
+        SELECT * FROM SPM_SYS.base_depart where parent_id = #{parent_id}
+    </select>
+
+    <select id="selectAllSchool" resultType="com.ts.spm.bizs.entity.admin.Depart" >
+        SELECT * FROM SPM_SYS.base_depart where  name_of_office='JYZGJG' and type > 3
+    </select>
+
+    <select id="selectChildren" resultType="String">
+        SELECT ID FROM SPM_SYS.BASE_DEPART where  FIND_IN_SET(id,SPM_SYS.get_child_depart_list( #{id}))
+    </select>
+    <select id="selectChildrenDepart" resultType="com.ts.spm.bizs.entity.admin.Depart">
+    SELECT * FROM SPM_SYS.BASE_DEPART where FIND_IN_SET(id,SPM_SYS.get_child_depart_list(#{deptId}))
+      AND ID IN (
+       SELECT
+        DEPART_ID
+       FROM
+        SPM_SYS.BASE_USER_DEPART
+       WHERE
+        user_id = #{userId}
+      )
+      order by ORDER_NUM asc
+    </select>
+
+
+    <select id="getUserMapDepart" resultMap="departMap" parameterType="java.lang.String">
+    select bd.id,bd.name,bd.PARENT_ID,bd.code,bd.type from SPM_SYS.base_depart bd
+    inner join
+    SPM_SYS.BASE_USER_DEPART bdu
+    on bdu.DEPART_ID = bd.id
+    WHERE bdu.USER_ID = #{id}
+    order by bd.ORDER_NUM asc
+  </select>
+
+    <!--new-->
+    <select id="getDepartList" resultMap="departMap">
+        select bd.* from SPM_SYS.base_depart bd
+        inner join
+        SPM_SYS.BASE_USER_DEPART bdu
+        on bdu.DEPART_ID = bd.id
+        WHERE bdu.USER_ID = #{userId}
+        <if test="name!=null and name!=''">
+            and bd.NAME like CONCAT(CONCAT('%',#{name}),'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and bd.TYPE=#{type}
+        </if>
+        <if test="status!=null and status!=''">
+            and bd.STATUS=#{status}
+        </if>
+        order by bd.ORDER_NUM asc
+    </select>
+
+    <select id="getDepartTree" resultMap="departMap">
+        select bd.* from SPM_SYS.base_depart bd
+        inner join
+        SPM_SYS.BASE_USER_DEPART bdu
+        on bdu.DEPART_ID = bd.id
+        WHERE bdu.USER_ID = #{userId} and bd.STATUS=0
+        <if test="typeList!=null and typeList.size>0">
+            and  bd.TYPE in
+            <foreach collection="typeList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        order by bd.ORDER_NUM asc
+    </select>
+
+
+    <select id="getDepartNameById" resultType="String" parameterType="java.lang.String">
+        SELECT GROUP_CONCAT(name order by type separator '-')
+        FROM SPM_SYS.BASE_DEPART where  FIND_IN_SET(id,SPM_SYS.get_parent_depart_list(#{departId}))
+    </select>
+
+    <select id="getParent" resultMap="departMap" parameterType="java.lang.String">
+        SELECT * FROM SPM_SYS.BASE_DEPART where FIND_IN_SET(id,SPM_SYS.get_parent_depart_list(#{id}))
+    </select>
+
+    <select id="getDepartName" resultType="String" >
+        SELECT name from (SELECT * FROM SPM_SYS.BASE_DEPART where FIND_IN_SET(id,SPM_SYS.get_parent_depart_list(#{departId})) ) a where a.type=#{type}
+    </select>
+
+</mapper>

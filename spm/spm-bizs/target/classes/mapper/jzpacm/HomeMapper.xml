@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.spm.bizs.mapper.jzpacm.HomeMapper">
+	<select id="selectCount" resultType="Map">
+		SELECT
+			count( dri.HANDLE_MODE ) AS "totality",
+			sum( CASE WHEN to_number ( dri.HANDLE_MODE ) = 0 THEN 1 ELSE 0 END ) as "manCount",
+			sum( CASE WHEN to_number ( dri.HANDLE_MODE ) = 1 THEN 1 ELSE 0 END ) as "aiCount"
+		FROM
+			"DEAL_RESULT_INFO" dri 
+		WHERE
+			TO_CHAR ( dri.CREATE_TIME, 'yyyymmdd' ) = TO_CHAR ( SYSDATE, 'yyyymmdd' )
+	</select>
+	<select id="selectInspectCount" resultType="Map">
+		SELECT
+			bd.NAME AS "name",
+			count( pfti.POINTID ) AS "count" 
+		FROM
+			SPM_SYS.BASE_DEPART bd
+			LEFT JOIN SPM_SYS.base_point bp ON bd.id = bp.DEPART_id
+			LEFT JOIN PICTURE_FIGURE_TASK_INFO pfti ON pfti.POINTID = bp.id 
+		WHERE
+			TO_CHAR ( pfti.CREATE_TIME, 'yyyymmdd' ) = TO_CHAR ( SYSDATE, 'yyyymmdd' ) 
+		GROUP BY
+			bd.NAME,
+			pfti.POINTID 
+		ORDER BY
+			count( pfti.POINTID ) DESC
+	</select>
+	<select id="selectInfo" resultType="Map">
+		SELECT
+			bd.NAME AS "name",
+			count( bd.NAME ) - 1 AS "count" 
+		FROM
+			SPM_SYS.BASE_DEPART bd 
+		GROUP BY
+			bd.NAME
+	</select>
+	<select id="selectWrapCount" resultType="Map">
+		SELECT
+			TO_CHAR ( dri.CREATE_TIME, 'hh24' ) AS "time",
+			COUNT( * ) AS "count" 
+		FROM
+			"DEAL_RESULT_INFO" dri 
+		WHERE
+			TO_CHAR ( TRUNC ( dri.CREATE_TIME ), 'yyyy-mm-dd' ) = ( SELECT TO_CHAR ( SYSDATE, 'yyyy-mm-dd' ) FROM DUAL ) 
+		GROUP BY
+			TO_CHAR ( dri.CREATE_TIME, 'hh24' )
+	</select>
+	<select id="selectProhibitCount" resultType="Map">
+		SELECT
+			dt.NAME AS "name",
+			count( toii.CONFIRM_FORBIDDEN_TYPE ) AS "value" 
+		FROM
+			SPM_SYS.DICT_TYPE dt
+			LEFT JOIN TBL_OPEN_INSPECTION_INFO toii ON to_char ( toii.CONFIRM_FORBIDDEN_TYPE ) = dt.CODE 
+			where TO_CHAR ( toii.CREATE_TIME, 'yyyymmdd' ) = TO_CHAR ( SYSDATE, 'yyyymmdd' ) 
+		GROUP BY
+			dt.NAME 
+		ORDER BY
+			count( toii.CONFIRM_FORBIDDEN_TYPE ) DESC
+	</select>
+</mapper>

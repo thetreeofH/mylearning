@@ -1,0 +1,175 @@
+logging:
+  level:
+    #        tk.mybatis: DEBUG
+    com.ts.spm.bizs: INFO
+server:
+  port: 5003
+
+spring:
+  application:
+    name: spm-bizs
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  datasource:
+    name: test
+    url: jdbc:mysql://${MYSQL_HOST:192.168.20.199}:${MYSQL_PORT:63306}/spm_oper?useUnicode=true&characterEncoding=UTF8
+    username: telesounduser
+    password: xatelesoundusersx#$1
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x' from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+      removeAbandonedTimeout: 1800
+  redis:
+    database: 1
+#    host: ${REDIS_HOST:10.16.100.3}
+    host: ${REDIS_HOST:192.168.20.199}
+    port: ${REDIS_PORT:56379}
+    password: sx123456
+    pool:
+      max-active: 20
+  rabbitmq:
+#    host: ${RABBIT_MQ_HOST:10.16.100.3}
+    host: ${RABBIT_MQ_HOST:192.168.20.199}
+    port: ${RABBIT_MQ_PORT:5672}
+    username: jzpt
+    password: sx123456
+    zipkin:
+      enabled: true
+    sleuth:
+      sampler:
+        percentage: 1
+
+# 配置数据库
+mybatis:
+  mapper-locations: "classpath*:mapper/**/*.xml"
+  configuration:
+    settings:
+      #      返回空字段
+      callSettersOnNulls: true
+
+# 配置swagger
+swagger:
+  enabled: true
+  base-package: com.ts.spm.bizs
+  title: sp-bizs
+  version: 1.0.0.SNAPSHOT
+  description: 业务管理
+  contact:
+    name: admin
+
+# 配置用户认证和服务认证信息
+auth:
+  serviceId: ace-auth
+  user:
+    token-header: Authorization
+    limit-expire: 1440 # 一天过去,单位分钟
+  client:
+    id: spm-bizs
+    secret: 123456
+    token-header: client-token
+
+### spm-gis
+gisTilePath: /usr/local/spm/map/map.mbtiles
+
+### spm-tool
+ftp:
+  ftpPath: /usr/local/ftp/
+  ftpDa: /spm/da/
+  ftpOther: /spm/other/
+  ftpRootDir: /data/ftpdir
+  ftpLocal: /usr/local/ftp/
+#  ftpHost: 127.0.0.1
+  ftpHost: 192.168.20.199
+  ftpPort: 21
+  ftpUserName: ftpuser
+  ftpPassword: sx123456
+  probCheckPicturePath: /spm/probCheckPicture
+
+### jzp-oip, jzp-mq
+oipftp:
+#  local: 127.0.0.1
+  local: 192.168.20.199
+  prot: 21
+  userName: ftpuser
+  passWord: sx123456
+  xRayMachinePicturePath: /jzp/xRayMachinePicture
+  naturalLlightPicturesPath: /jzp/naturalLightPictures
+  suspectedItemsPicturePath: /jzp/suspectedItemsPicture
+  openInspectionPicturesPath: /jzp/openInspectionPictures   #zhouxiao
+  capturePicturePath: /jzp/capturePicture   #zhouxiao
+  fictitiousJudgePicturePath: /jzp/fictitiousJudgePicture
+
+### jzp-mq
+mq:
+  config:
+    new:
+      mission:
+        exchange: new_mission_exchange_topic
+        queue: collect.handle.mission.queue
+    handle:
+      result:
+        exchange: handle_result_exchange_topic
+        queue: collect.handle.result.queue
+    master:
+      slave:
+        switch:
+          exchange: master_slave_switch_exchange_topic
+          queue: distribute.server.master.slave.swicth.exchange.queue
+    device:
+      access:
+        notice:
+          exchange: device_access_notice_topic
+          queue: distribute.server.device.access.notice.queue
+    judge:
+      picture:
+        result:
+          exchange: judge_picture_result_topic
+          queue: worker.judge.picture.result.queue
+    openInspection:
+      information:
+        add:
+          exchange: openInspection_information_add_topic
+          queue: openInspection.information.queue
+    fictitious:
+      judge:
+        picture:
+          result:
+            exchange: fictitious_judge_picture_result_topic
+            queue: fictitious.worker.judge.picture.result.queue
+    video:
+      duty:
+        check:
+          exchange: video_on_duty_check_topic
+          queue: video.on.duty.check.queue
+
+app:
+  version: 1.0
+  build:
+    time: 2021-06-23 03:35:07
+
+up:
+  switch: false
+  picpath: http://10.16.100.3:8002/
+  base64: true
+  uppath: http://119.7.3.121:32210/
+
+work:
+  interday: true
+  interval: 24
+  offtime: '23:59:59'

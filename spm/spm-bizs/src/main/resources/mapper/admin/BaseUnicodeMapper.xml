@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.BaseUnicodeMapper" >
+  <resultMap id="UnicodeCheckBaseResultMap" type="com.ts.spm.bizs.entity.admin.BaseUnicode" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PREFIX" property="prefix" jdbcType="VARCHAR" />
+    <result column="SN" property="sn" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>

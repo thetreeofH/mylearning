@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.admin.RealTimeVideoMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.admin.RealTimeVideo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="stationName" property="stationName" jdbcType="VARCHAR" />
+    <result column="pointName" property="pointName" jdbcType="VARCHAR" />
+    <result column="alarmName" property="alarmName" jdbcType="VARCHAR" />
+    <result column="alarmType" property="alarmType" jdbcType="VARCHAR" />
+    <result column="devType" property="devType" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="port" property="port" jdbcType="VARCHAR" />
+    <result column="devUser" property="devUser" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="streamType" property="streamType" jdbcType="CHAR" />
+    <result column="devName" property="devName" jdbcType="VARCHAR" />
+    <result column="firmName" property="firmName" jdbcType="VARCHAR" />
+    <result column="dev_id" property="devId" jdbcType="VARCHAR" />
+    <result column="point_id" property="pointId" jdbcType="VARCHAR" />
+    <result column="line_id" property="lineId" jdbcType="VARCHAR" />
+    <result column="station_id" property="stationId" jdbcType="VARCHAR" />
+    <result column="lineName" property="lineName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+    <!--根据安检点ID查询设备详情-->
+    <select id="selectRealTimeByPointId" resultMap="BaseResultMap">
+        SELECT
+        T1.DEV_ID,
+        T1.DEV_IP ip,
+        T1.DEV_NAME devName,
+        T1.DEV_PORT port,
+        T1.DEV_CHL channel,
+        T1.DEV_PSWD password,
+        T1.DEV_USER devUser,
+        T1.POINT_ID,
+        '0' streamType,
+        T2.NAME pointName,
+        T3.NAME stationName,
+        dv.LABEL_DEFAULT firmName
+        FROM
+        TBC_DEVICE_SUB_INFO T1,
+        SPM_SYS.BASE_POINT T2,
+        SPM_SYS.BASE_DEPART t3,
+        spm_sys.dict_type dt,
+        spm_sys.dict_value dv
+        WHERE
+        dt.ID = dv.TYPE
+        AND dt.`CODE` = 'MPT'
+        AND dv.`VALUE` = T1.DEV_TYPE
+        AND T1.POINT_ID = T2.ID
+        AND T2.DEPART_ID = T3.ID
+        AND T1.ISVIDEO = 1
+        AND T1.IS_ONLINE = 1
+        AND T1.POINT_ID = #{pointId}
+    </select>
+    <select id="selectDeviceByDevId" resultMap="BaseResultMap">
+        SELECT
+        T1.DEV_IP ip,
+        T1.DEV_NAME devName,
+        T1.DEV_PORT port,
+        T1.DEV_CHL channel,
+        T1.DEV_PSWD password,
+        T1.DEV_USER devUser,
+        T1.dev_type devType,
+        '0' streamType,
+		t2.name pointName
+        FROM
+        TBC_DEVICE_SUB_INFO T1 LEFT JOIN SPM_SYS.BASE_POINT t2 on T1.POINT_ID = t2.ID
+        WHERE T1.DEV_ID = #{id}
+    </select>
+
+
+
+
+    <select id="isDeviceExist" resultType="java.lang.Integer">
+        SELECT  count(1) from real_time_video where point_id =#{pointId} and alarm_type=#{alarmType}
+    </select>
+
+    <select id="selectDeviceByPointIdAndAlarmType" resultType="java.lang.String">
+              SELECT dev_id from real_time_video  where 1=1
+                <if test="pointId!=null and pointId!=''">
+                    and POINT_ID =#{pointId}
+                </if>
+                <if test="alarmType!=null and alarmType!=''">
+                    and alarm_type=#{alarmType}
+                </if>
+
+    </select>
+
+  <select id="getRealTimeVideoList" resultMap="BaseResultMap">
+      SELECT
+      rtv.id,
+      rtv.line_id,
+      (select name from SPM_SYS.BASE_DEPART where rtv.LINE_ID=ID) lineName,
+      rtv.station_id,
+      t2.name pointName,
+      t3.name stationName,
+      rtv.POINT_ID,
+      rtv.alarm_type alarmType,
+      rtv.dev_id
+      FROM
+      real_time_video rtv
+      LEFT JOIN SPM_SYS.BASE_POINT t2 on rtv.POINT_ID = t2.ID
+      LEFT JOIN SPM_SYS.BASE_DEPART t3  on t2.DEPART_ID = t3.ID
+      where 1=1
+    <if test="stationId!=null and stationId!=''">
+      and rtv.STATION_id =#{stationId}
+    </if>
+    <if test="pointId!=null and pointId!=''">
+      and rtv.POINT_ID =#{pointId}
+    </if>
+    <if test="lineId!=null and lineId!=''">
+      and rtv.LINE_ID =#{lineId}
+    </if>
+  </select>
+
+
+  <delete id="delRealTimeVideo">
+    delete from SPM_OPER.real_time_video where id =#{id}
+  </delete>
+
+<select id="selectDeviceById" resultMap="BaseResultMap">
+    select * from SPM_OPER.real_time_video where id =#{id}
+</select>
+
+</mapper>

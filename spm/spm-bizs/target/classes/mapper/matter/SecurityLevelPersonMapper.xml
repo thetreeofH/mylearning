@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.matter.SecurityLevelPersonMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.matter.SecurityLevelPerson" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="LEVEL_ID" property="levelId" jdbcType="VARCHAR" />
+    <result column="GATE_SUM" property="gateSum" jdbcType="INTEGER" />
+    <result column="HIGH_PERSON_COUNT" property="highPersonCount" jdbcType="INTEGER" />
+    <result column="COMMON_PERSON_COUNT" property="commonPersonCount" jdbcType="INTEGER" />
+    <result column="LOWER_PERSON_COUNT" property="lowerPersonCount" jdbcType="INTEGER" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER_ID" property="crtUserId" jdbcType="VARCHAR" />
+    <result column="CRT_USER_NAME" property="crtUserName" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER_ID" property="updUserId" jdbcType="VARCHAR" />
+    <result column="UPD_USER_NAME" property="updUserName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, LEVEL_ID, GATE_SUM, HIGH_PERSON_COUNT, COMMON_PERSON_COUNT, LOWER_PERSON_COUNT,
+    CRT_TIME, CRT_USER_ID, CRT_USER_NAME, UPD_TIME, UPD_USER_ID, UPD_USER_NAME, TENANT_ID
+  </sql>
+
+  <select id="selectBySecrityLevelPerson" resultMap="BaseResultMap">
+      SELECT  ID, LEVEL_ID, GATE_SUM, HIGH_PERSON_COUNT, COMMON_PERSON_COUNT, LOWER_PERSON_COUNT,
+    CRT_TIME, CRT_USER_ID, CRT_USER_NAME, UPD_TIME, UPD_USER_ID, UPD_USER_NAME, TENANT_ID
+      from TBL_SECURITY_LEVEL_PERSON where 1=1
+    <if test="levelId!=null and levelId.size > 0">
+      and  LEVEL_ID in
+      <foreach collection="levelId" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="gateSum!=null and gateSum!=''">
+      and GATE_SUM=#{gateSum}
+    </if>
+  </select>
+</mapper>

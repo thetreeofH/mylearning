@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpitgcfg.TblIntelligentCfgMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpitgcfg.TblIntelligentCfg" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="POINT_NAME" property="pointName" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+    <result column="IF_INTELLIGENT_JUDGE_PICTURE" property="ifIntelligentJudgePicture" jdbcType="DECIMAL" />
+    <result column="PERSON_REVIEW_PROPORTION" property="personReviewProportion" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, POINT_ID, POINT_NAME, STATION_ID, STATION_NAME, IF_INTELLIGENT_JUDGE_PICTURE, 
+    PERSON_REVIEW_PROPORTION, CREATE_TIME, UPDATE_TIME
+  </sql>
+</mapper>

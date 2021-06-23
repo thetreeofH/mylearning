@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.jzpmq.TblTestMissionMapper" >
+  <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.jzpmq.TblTestMission" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="MISSION_ID" property="missionId" jdbcType="VARCHAR" />
+    <result column="POINT_ID" property="pointId" jdbcType="VARCHAR" />
+    <result column="X_RAY_MACHINE_PICTURES" property="xRayMachinePictures" jdbcType="VARCHAR" />
+    <result column="NATURAL_LIGHT_PICTURES" property="naturalLightPictures" jdbcType="VARCHAR" />
+    <result column="JUDGE_PICTURE_USER_ID" property="judgePictureUserId" jdbcType="VARCHAR" />
+    <result column="JUDGE_PICTURE_USER_NAME" property="judgePictureUserName" jdbcType="VARCHAR" />
+    <result column="TEST_MISSION_NAME" property="testMissionName" jdbcType="VARCHAR" />
+    <result column="IF_DISTINGUISH" property="ifDistinguish" jdbcType="DECIMAL" />
+    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="IF_SEND" property="ifSend" jdbcType="DECIMAL" />
+    <result column="SUSPECTED_FORBIDDEN_TYPE" property="suspectedForbiddenType" jdbcType="DECIMAL" />
+    <result column="SUSPECTED_FORBIDDEN_SUBTYPE" property="suspectedForbiddenSubtype" jdbcType="DECIMAL" />
+    <result column="CAPTURE_PICTURE_URL" property="capturePictureUrl" jdbcType="VARCHAR" />
+    <result column="CAPTURE_DESCRIBE" property="captureDescribe" jdbcType="VARCHAR" />
+    <result column="CAPTURE_TIME" property="captureTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, MISSION_ID, POINT_ID, X_RAY_MACHINE_PICTURES, NATURAL_LIGHT_PICTURES, JUDGE_PICTURE_USER_ID, 
+    JUDGE_PICTURE_USER_NAME, TEST_MISSION_NAME, IF_DISTINGUISH, ATTR1, ATTR2, ATTR3, 
+    ATTR4, CREATE_TIME, UPDATE_TIME, MEMO, IF_SEND, SUSPECTED_FORBIDDEN_TYPE, SUSPECTED_FORBIDDEN_SUBTYPE, 
+    CAPTURE_PICTURE_URL, CAPTURE_DESCRIBE, CAPTURE_TIME
+  </sql>
+
+  <resultMap id="statisticsResultMap" type="java.util.Map">
+    <result column="count" property="count" jdbcType="VARCHAR"/>
+    <result column="judge_picture_user_id" property="judgePictureUserId" jdbcType="VARCHAR"/>
+    <result column="judge_picture_user_name" property="judgePictureUserName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="statistics" resultMap="statisticsResultMap">
+    select count(1) as count,judge_picture_user_id,judge_picture_user_name
+    from jzp_oper.tbl_test_mission
+    where 1=1
+    <if test="startTime != null and startTime != ''">
+      and DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') >= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and #{endTime} >= DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s')
+    </if>
+    <if test="judgePictureUserName != null and judgePictureUserName != ''">
+      and judge_picture_user_name like concat('%',#{judgePictureUserName},'%')
+    </if>
+    <if test="ifDistinguish != null">
+      and if_distinguish = #{ifDistinguish}
+    </if>
+    GROUP BY judge_picture_user_id,judge_picture_user_name
+  </select>
+</mapper>

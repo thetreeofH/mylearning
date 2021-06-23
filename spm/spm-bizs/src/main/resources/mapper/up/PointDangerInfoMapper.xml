@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ts.spm.bizs.mapper.up.PointDangerInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.ts.spm.bizs.entity.up.PointDangerInfo" >
+        <result column="eventId" property="eventId" jdbcType="VARCHAR" />
+        <result column="alarmTypeRootCode" property="alarmTypeRootCode" jdbcType="VARCHAR" />
+        <result column="alarmTypeParentCode" property="alarmTypeParentCode" jdbcType="VARCHAR" />
+        <result column="alarmTypeCode" property="alarmTypeCode" jdbcType="VARCHAR" />
+        <result column="alarmLevel" property="alarmLevel" jdbcType="VARCHAR" />
+        <result column="alarmParentRootName" property="alarmParentRootName" jdbcType="VARCHAR" />
+        <result column="alarmParentName" property="alarmParentName" jdbcType="VARCHAR" />
+        <result column="alarmName" property="alarmName" jdbcType="TIMESTAMP" />
+        <result column="alarmTime" property="alarmTime" jdbcType="DECIMAL" />
+        <result column="alarmImgUrl" property="alarmImgUrl" jdbcType="VARCHAR" />
+        <result column="lineCode" property="lineCode" jdbcType="VARCHAR" />
+        <result column="lineName" property="lineName" jdbcType="VARCHAR" />
+        <result column="stationCode" property="stationCode" jdbcType="VARCHAR" />
+        <result column="stationName" property="stationName" jdbcType="VARCHAR" />
+        <result column="securityCheckChannelId" property="securityCheckChannelId" jdbcType="VARCHAR" />
+        <result column="securityCheckChannelName" property="securityCheckChannelName" jdbcType="VARCHAR" />
+        <result column="deviceId" property="deviceId" jdbcType="VARCHAR" />
+        <result column="deviceName" property="deviceName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getLastInfo" resultMap="BaseResultMap">
+        SELECT
+            a.ID eventId,
+            '02' alarmTypeRootCode,
+            a.MTYPE alarmTypeParentCode,
+            a.STYPE alarmTypeCode,
+            '检物' alarmParentRootName,
+            b.NAME alarmParentName,
+            c.LABEL_DEFAULT alarmName,
+            UNIX_TIMESTAMP(a.TIME) * 1000 alarmTime,
+            a.X_PIC_PATH alarmImgUrl,
+            a.POINT_ID securityCheckChannelId,
+            f.NAME securityCheckChannelName,
+            g.ID stationCode,
+            g.NAME stationName,
+            h.ID lineCode,
+            h.NAME lineName,
+            i.DEV_ID deviceId,
+            i.DEV_NAME deviceName
+        FROM
+            spm_oper.tbc_point_danger a
+        LEFT JOIN spm_sys.dict_type b ON a.MTYPE = b.CODE AND b.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6'
+        LEFT JOIN spm_sys.dict_value c ON a.STYPE = c.VALUE AND c.TYPE IN (SELECT e.ID FROM spm_sys.dict_type e WHERE e.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6')
+        LEFT JOIN spm_sys.base_point f ON a.POINT_ID = f.ID
+        LEFT JOIN spm_sys.base_depart g ON f.DEPART_ID = g.ID
+        LEFT JOIN spm_sys.base_depart h ON h.ID = g.PARENT_ID
+        LEFT JOIN spm_oper.tbc_device_sub_info i ON i.POINT_ID = a.POINT_ID AND i.DEV_TYPE = '150'
+        WHERE a.TIME > nexttime('pointdanger', '0')
+    </select>
+
+    <select id="getHandleInfo" resultType="com.ts.spm.bizs.entity.up.PointDangerInfo">
+        SELECT
+            a.ID eventId,
+            '02' alarmTypeRootCode,
+            b.ATTR1 alarmTypeParentCode,
+            c.ATTR1 alarmTypeCode,
+            c.ATTR2 alarmLevel,
+            '检物' alarmParentRootName,
+            b.ATTR3 alarmParentName,
+            c.ATTR3 alarmName,
+            UNIX_TIMESTAMP(IFNULL(a.FIRST_TIME ,a.CREATE_TIME)) * 1000 alarmTime,
+            a.SUSPECTED_ITEMS_PICTURE alarmImgUrl,
+            a.POINTID securityCheckChannelId,
+            f.NAME securityCheckChannelName,
+            g.ID stationCode,
+            g.NAME stationName,
+            h.ID lineCode,
+            h.NAME lineName,
+            i.DEV_ID deviceId,
+            i.DEV_NAME deviceName
+        FROM
+            jzp_oper.deal_result_info a
+        LEFT JOIN spm_sys.dict_type b ON a.SUSPECTED_FORBIDDEN_TYPE = b.CODE AND b.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6'
+        LEFT JOIN spm_sys.dict_value c ON a.SUSPECTED_FORBIDDEN_SUBTYPE = c.VALUE AND c.TYPE IN (SELECT e.ID FROM spm_sys.dict_type e WHERE e.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6')
+        LEFT JOIN spm_sys.base_point f ON a.POINTID = f.ID
+        LEFT JOIN spm_sys.base_depart g ON f.DEPART_ID = g.ID
+        LEFT JOIN spm_sys.base_depart h ON h.ID = g.PARENT_ID
+        LEFT JOIN spm_oper.tbc_device_sub_info i ON i.POINT_ID = a.POINTID AND i.DEV_TYPE = '150'
+		WHERE a.ID = #{id} LIMIT 1
+    </select>
+
+    <select id="getDoorAlarmInfo" resultType="com.ts.spm.bizs.entity.up.PointDangerInfo">
+        SELECT
+            a.ID eventId,
+            '02' alarmTypeRootCode,
+            b.ATTR1 alarmTypeParentCode,
+            c.ATTR1 alarmTypeCode,
+            c.ATTR2 alarmLevel,
+            '检物' alarmParentRootName,
+            b.ATTR3 alarmParentName,
+            c.ATTR3 alarmName,
+            UNIX_TIMESTAMP(IFNULL(a.FIRST_TIME ,a.CREATE_TIME)) * 1000 alarmTime,
+            a.PICTURES alarmImgUrl,
+            a.POINTID securityCheckChannelId,
+            f.NAME securityCheckChannelName,
+            g.ID stationCode,
+            g.NAME stationName,
+            h.ID lineCode,
+            h.NAME lineName,
+            i.DEV_ID deviceId,
+            i.DEV_NAME deviceName,
+            a.HANDLE_RESULT status,
+            '2' source
+        FROM
+            jzp_oper.tbl_open_inspection_info a
+        LEFT JOIN spm_sys.dict_type b ON a.CONFIRM_FORBIDDEN_TYPE = b.CODE AND b.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6'
+        LEFT JOIN spm_sys.dict_value c ON a.CONFIRM_FORBIDDEN_SUBTYPE = c.VALUE AND c.TYPE IN (SELECT e.ID FROM spm_sys.dict_type e WHERE e.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6')
+        LEFT JOIN spm_sys.base_point f ON a.POINTID = f.ID
+        LEFT JOIN spm_sys.base_depart g ON f.DEPART_ID = g.ID
+        LEFT JOIN spm_sys.base_depart h ON h.ID = g.PARENT_ID
+        LEFT JOIN spm_oper.tbc_device_sub_info i ON i.POINT_ID = a.POINTID AND i.DEV_TYPE = '160'
+		WHERE a.ID = #{id} LIMIT 1
+    </select>
+
+    <select id="getPackageInfo" resultType="com.ts.spm.bizs.entity.up.PackageInfo">
+        SELECT
+            a.ID eventId,
+            a.MISSION_ID imgUuid,
+            UNIX_TIMESTAMP(IFNULL(a.FIRST_TIME ,a.CREATE_TIME)) * 1000 capTime,
+            a.POINTID securityCheckCode,
+            f. NAME securityCheck,
+            g.ID stationCode,
+            g. NAME stationName,
+            h.ID lineCode,
+            h. NAME lineName,
+            i.DEV_ID deviceSerialNumber,
+            i.DEV_NAME deviceName,
+            a.X_RAY_MACHINE_PICTURE imgMainUrl,
+			a.NATURAL_LIGHT_PICTURES visiableImgBackUrl,
+            '2' source
+        FROM
+            jzp_oper.picture_figure_task_info a
+        LEFT JOIN spm_sys.base_point f ON a.POINTID = f.ID
+        LEFT JOIN spm_sys.base_depart g ON f.DEPART_ID = g.ID
+        LEFT JOIN spm_sys.base_depart h ON h.ID = g.PARENT_ID
+        LEFT JOIN spm_oper.tbc_device_sub_info i ON i.POINT_ID = a.POINTID
+        AND i.DEV_TYPE = '150'
+        WHERE a.ID = #{id} LIMIT 1
+    </select>
+
+    <select id="getPackageAlarmInfo" resultType="com.ts.spm.bizs.entity.up.PackageInfo">
+       SELECT
+            a.MISSION_ID eventId,
+			ifnull(c.ATTR4, b.ATTR4) dictValues,
+            UNIX_TIMESTAMP(IFNULL(a.FIRST_TIME ,a.CREATE_TIME)) * 1000 capTime,
+            a.SUSPECTED_ITEMS_PICTURE imgMainUrl,
+            a.POINTID securityCheckCode,
+            f.NAME securityCheck,
+            g.ID stationCode,
+            g.NAME stationName,
+            h.ID lineCode,
+            h.NAME lineName,
+            i.DEV_ID deviceSerialNumber,
+            i.DEV_NAME deviceName,
+			a.MISSION_ID imgUuid,
+			j.NATURAL_LIGHT_PICTURES visiableImgBackUrl,
+			'2' source
+        FROM
+            jzp_oper.deal_result_info a
+        LEFT JOIN spm_sys.dict_type b ON a.SUSPECTED_FORBIDDEN_TYPE = b.CODE AND b.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6'
+        LEFT JOIN spm_sys.dict_value c ON a.SUSPECTED_FORBIDDEN_SUBTYPE = c.VALUE AND c.TYPE IN (SELECT e.ID FROM spm_sys.dict_type e WHERE e.PARENT_ID = '5f5a9161ce714855b0f0d9a9b2469db6')
+        LEFT JOIN spm_sys.base_point f ON a.POINTID = f.ID
+        LEFT JOIN spm_sys.base_depart g ON f.DEPART_ID = g.ID
+        LEFT JOIN spm_sys.base_depart h ON h.ID = g.PARENT_ID
+        LEFT JOIN spm_oper.tbc_device_sub_info i ON i.POINT_ID = a.POINTID AND i.DEV_TYPE = '150'
+		LEFT JOIN jzp_oper.picture_figure_task_info j ON a.MISSION_ID = j.MISSION_ID
+		WHERE a.ID = #{id} LIMIT 1
+    </select>
+
+    <update id="updatetime" parameterType="java.lang.Long">
+        update sys_up_log set
+        LAST_TIME = from_unixtime(#{time})
+        where name = 'pointdanger'
+    </update>
+</mapper>
